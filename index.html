@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandpoint — City Cards</title>
+    <style>
+        /* ========== MAIN STYLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a1920 0%, #0d2b2e 100%);
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            padding: 30px 20px;
+            color: #eee;
+        }
+
+        .city-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ========== HEADER ========== */
+        .city-header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .city-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(255,215,0,0.3);
+        }
+
+        .city-header p {
+            color: #FFD700;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* ========== TWO COLUMNS LAYOUT ========== */
+        .stacks-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        /* Each stack column */
+        .stack-column {
+            flex: 1;
+            min-width: 360px;
+            background: rgba(10, 25, 32, 0.6);
+            border-radius: 28px;
+            padding: 24px 18px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .stack-title {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #FFD700;
+            display: inline-block;
+            width: 100%;
+            color: #FFD700;
+        }
+
+        .stack-title span {
+            background: #FFD700;
+            color: #0a1920;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        /* Stack player container (arrows + stack area) */
+        .stack-player {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 10px 0;
+        }
+
+        /* Minimalist arrow buttons */
+        .arrow-btn {
+            background: rgba(30, 50, 45, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 40px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #FFD700;
+            font-size: 24px;
+            font-weight: 300;
+            backdrop-filter: blur(4px);
+        }
+
+        .arrow-btn:hover {
+            background: #FFD700;
+            color: #0a1920;
+            border-color: #FFD700;
+            transform: scale(1.05);
+        }
+
+        .arrow-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Stack area */
+        .stack-area {
+            position: relative;
+            width: 280px;
+            height: 210px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* Individual card in stack */
+        .stack-card {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            background: #1a2a2a;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            backface-visibility: hidden;
+            user-select: none;
+        }
+
+        /* Messy stack effect — different rotations for each position */
+        .stack-card.pos-0 { transform: rotate(-5deg) translateX(-5px) translateY(-3px); z-index: 1; }
+        .stack-card.pos-1 { transform: rotate(3deg) translateX(4px) translateY(-1px); z-index: 2; }
+        .stack-card.pos-2 { transform: rotate(-2deg) translateX(-2px) translateY(1px); z-index: 3; }
+        .stack-card.pos-3 { transform: rotate(4deg) translateX(5px) translateY(3px); z-index: 4; }
+        .stack-card.pos-4 { transform: rotate(-3deg) translateX(-4px) translateY(5px); z-index: 5; }
+
+        /* On hover — cards fan out */
+        .stack-area:hover .stack-card {
+            box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+        }
+
+        .stack-area:hover .stack-card.pos-0 {
+            transform: translateX(-22px) translateY(-8px) rotate(-8deg) scale(1.02);
+            z-index: 10;
+        }
+        .stack-area:hover .stack-card.pos-1 {
+            transform: translateX(-6px) translateY(-12px) rotate(-3deg) scale(1.02);
+            z-index: 9;
+        }
+        .stack-area:hover .stack-card.pos-2 {
+            transform: translateX(0px) translateY(-14px) rotate(0deg) scale(1.02);
+            z-index: 8;
+        }
+        .stack-area:hover .stack-card.pos-3 {
+            transform: translateX(6px) translateY(-9px) rotate(3deg) scale(1.02);
+            z-index: 7;
+        }
+        .stack-area:hover .stack-card.pos-4 {
+            transform: translateX(20px) translateY(-4px) rotate(6deg) scale(1.02);
+            z-index: 6;
+        }
+
+        /* Hover on specific card — pops out more */
+        .stack-card:hover {
+            transform: translateX(0) translateY(-28px) rotate(0deg) scale(1.07) !important;
+            z-index: 20 !important;
+            box-shadow: 0 22px 38px rgba(0,0,0,0.6);
+            transition: all 0.25s ease-out;
+        }
+
+        .stack-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        .stack-card .card-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 25px 8px 8px;
+            color: white;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        /* Navigation hint text */
+        .navigation-hint {
+            text-align: center;
+            font-size: 10px;
+            color: #FFD700;
+            opacity: 0.6;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal overlay for fullscreen images */
+        .modal-stack {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .modal-stack.active {
+            display: flex;
+        }
+
+        .modal-stack img {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 12px;
+            object-fit: contain;
+        }
+
+        .modal-stack .modal-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #FFD700;
+            background: rgba(0,0,0,0.7);
+            padding: 12px;
+            font-size: 15px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .stack-area { width: 240px; height: 180px; }
+            .arrow-btn { width: 38px; height: 38px; font-size: 18px; }
+            .stack-column { min-width: 320px; }
+        }
+        @media (max-width: 800px) {
+            .stacks-wrapper { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="city-container">
+    <!-- HEADER SECTION -->
+    <div class="city-header">
+        <h1>🌊🏄 Sandpoint 🏖️☀️</h1>
+        <p>A sun-kissed haven for surfers and dreamers.</p>
+    </div>
+
+    <div class="stacks-wrapper">
+        
+        <!-- LEFT STACK: DISTRICTS (18 cards) -->
+        <div class="stack-column">
+            <div class="stack-title">🏄‍♂️🌴 Districts <span>18</span></div>
+            <div class="stack-player">
+                <div class="arrow-btn" id="districtsPrev">◀</div>
+                <div class="stack-area" id="districtsStack"></div>
+                <div class="arrow-btn" id="districtsNext">▶</div>
+            </div>
+            <div class="navigation-hint">🖱️ Click / scroll / swipe / arrows → flip cards</div>
+        </div>
+
+        <!-- RIGHT STACK: POINTS OF INTEREST (13 cards) -->
+        <div class="stack-column">
+            <div class="stack-title">📍✨ Points of Interest <span>13</span></div>
+            <div class="stack-player">
+                <div class="arrow-btn" id="placesPrev">◀</div>
+                <div class="stack-area" id="placesStack"></div>
+                <div class="arrow-btn" id="placesNext">▶</div>
+            </div>
+            <div class="navigation-hint">🖱️ Click / scroll / swipe / arrows → flip cards</div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL WINDOW -->
+<div id="modalStack" class="modal-stack">
+    <img id="modalStackImage" src="">
+    <div class="modal-caption" id="modalStackCaption"></div>
+</div>
+
+<script>
+    // ========== DISTRICTS DATA (18 cards) ==========
+    const districtsData = [
+        { thumb: "https://picsum.photos/id/104/280/210", full: "https://picsum.photos/id/104/1200/800", label: "🏢 Civic Center – Administrative district" },
+        { thumb: "https://picsum.photos/id/15/280/210", full: "https://picsum.photos/id/15/1200/800", label: "🏭 Westgate Industrial Park – Clean industry" },
+        { thumb: "https://picsum.photos/id/111/280/210", full: "https://picsum.photos/id/111/1200/800", label: "🏘️ Cliffside Estates – Gated community" },
+        { thumb: "https://picsum.photos/id/169/280/210", full: "https://picsum.photos/id/169/1200/800", label: "🏙️ Coastal Plaza – Modern hub" },
+        { thumb: "https://picsum.photos/id/20/280/210", full: "https://picsum.photos/id/20/1200/800", label: "🎡 The Boardwalk – Tourist promenade" },
+        { thumb: "https://picsum.photos/id/42/280/210", full: "https://picsum.photos/id/42/1200/800", label: "🏙️ Harborview – Urban apartments" },
+        { thumb: "https://picsum.photos/id/33/280/210", full: "https://picsum.photos/id/33/1200/800", label: "🏛️ Old Sandpoint – Historic core" },
+        { thumb: "https://picsum.photos/id/96/280/210", full: "https://picsum.photos/id/96/1200/800", label: "🏡 Pacific Heights – Prestigious homes" },
+        { thumb: "https://picsum.photos/id/127/280/210", full: "https://picsum.photos/id/127/1200/800", label: "🏰 Sunswept Bay – Upscale villas" },
+        { thumb: "https://picsum.photos/id/58/280/210", full: "https://picsum.photos/id/58/1200/800", label: "🏘️ Seagull Nest – Family-friendly neighborhood" },
+        { thumb: "https://picsum.photos/id/94/280/210", full: "https://picsum.photos/id/94/1200/800", label: "🏡 Whispering Pines – Family suburb" },
+        { thumb: "https://picsum.photos/id/29/280/210", full: "https://picsum.photos/id/29/1200/800", label: "🍁 Maple Grove – Quiet streets" },
+        { thumb: "https://picsum.photos/id/77/280/210", full: "https://picsum.photos/id/77/1200/800", label: "🌲 Redwood Gateway – Nature's threshold" },
+        { thumb: "https://picsum.photos/id/13/280/210", full: "https://picsum.photos/id/13/1200/800", label: "🌲 Redwood National Reserve – Protected wilderness" },
+        { thumb: "https://picsum.photos/id/26/280/210", full: "https://picsum.photos/id/26/1200/800", label: "🏄 Driftwood Shores – Youthful beaches" },
+        { thumb: "https://picsum.photos/id/91/280/210", full: "https://picsum.photos/id/91/1200/800", label: "🛣️ The Crossroads – Highway entrance" },
+        { thumb: "https://picsum.photos/id/38/280/210", full: "https://picsum.photos/id/38/1200/800", label: "🏭 The Spills – Industrial decay" },
+        { thumb: "https://picsum.photos/id/14/280/210", full: "https://picsum.photos/id/14/1200/800", label: "⚓ Sandpoint Docks – Working port" }
+    ];
+
+    // ========== POINTS OF INTEREST DATA (13 cards) ==========
+    const placesData = [
+        { thumb: "https://picsum.photos/id/104/280/210", full: "https://picsum.photos/id/104/1200/800", label: "💄 Aphrodite's Touch – Artisan perfumery" },
+        { thumb: "https://picsum.photos/id/15/280/210", full: "https://picsum.photos/id/15/1200/800", label: "💪 Coastal Fitness & Surf Club – Premium complex" },
+        { thumb: "https://picsum.photos/id/111/280/210", full: "https://picsum.photos/id/111/1200/800", label: "🧬 Prometheus Biosolutions – Cutting-edge research" },
+        { thumb: "https://picsum.photos/id/169/280/210", full: "https://picsum.photos/id/169/1200/800", label: "🐟 Salty Pete's Seafood – Abandoned warehouse" },
+        { thumb: "https://picsum.photos/id/20/280/210", full: "https://picsum.photos/id/20/1200/800", label: "🏫 Sandpoint Coast High School – Main school" },
+        { thumb: "https://picsum.photos/id/42/280/210", full: "https://picsum.photos/id/42/1200/800", label: "🚒 Sandpoint Fire Station #1 – Central firehouse" },
+        { thumb: "https://picsum.photos/id/33/280/210", full: "https://picsum.photos/id/33/1200/800", label: "👮 Sandpoint PD – Police headquarters" },
+        { thumb: "https://picsum.photos/id/96/280/210", full: "https://picsum.photos/id/96/1200/800", label: "🏥 St. Catherine's Medical Center – Main hospital" },
+        { thumb: "https://picsum.photos/id/127/280/210", full: "https://picsum.photos/id/127/1200/800", label: "🥃 The Last Call – Gloomy dive" },
+        { thumb: "https://picsum.photos/id/58/280/210", full: "https://picsum.photos/id/58/1200/800", label: "🍻 The Rustic Tap – Ranger pub" },
+        { thumb: "https://picsum.photos/id/94/280/210", full: "https://picsum.photos/id/94/1200/800", label: "🔮 The Witching Hour – Bass-heavy club" },
+        { thumb: "https://picsum.photos/id/29/280/210", full: "https://picsum.photos/id/29/1200/800", label: "🏟️ Tides Arena – Sports venue" },
+        { thumb: "https://picsum.photos/id/77/280/210", full: "https://picsum.photos/id/77/1200/800", label: "☕ Unstable Beans – Quirky café" }
+    ];
+
+    // ========== UNIVERSAL CARD STACK CLASS ==========
+    class CardStack {
+        constructor(stackAreaId, prevBtnId, nextBtnId, data) {
+            this.stackArea = document.getElementById(stackAreaId);
+            this.prevBtn = document.getElementById(prevBtnId);
+            this.nextBtn = document.getElementById(nextBtnId);
+            this.data = data;
+            this.currentIndex = 0;
+            this.totalCards = data.length;
+            this.init();
+        }
+
+        init() {
+            this.renderStack();
+
+            // 1. ARROW BUTTONS
+            this.prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.prevCard();
+            });
+            this.nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.nextCard();
+            });
+
+            // 2. CLICK ON STACK (flips forward)
+            this.stackArea.addEventListener('click', () => this.nextCard());
+
+            // 3. MOUSE WHEEL
+            this.stackArea.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                if (e.deltaY > 0) this.nextCard();
+                else this.prevCard();
+            });
+
+            // 4. MOUSE SWIPE (drag)
+            let startX = 0;
+            let isDragging = false;
+            this.stackArea.addEventListener('mousedown', (e) => {
+                startX = e.clientX;
+                isDragging = true;
+                this.stackArea.style.cursor = 'grabbing';
+            });
+            window.addEventListener('mouseup', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                this.stackArea.style.cursor = 'pointer';
+                const diff = e.clientX - startX;
+                if (Math.abs(diff) > 40) {
+                    if (diff > 0) this.prevCard();
+                    else this.nextCard();
+                }
+            });
+            this.stackArea.addEventListener('mouseleave', () => {
+                isDragging = false;
+                this.stackArea.style.cursor = 'pointer';
+            });
+        }
+
+        renderStack() {
+            this.stackArea.innerHTML = '';
+            // Always show 5 cards: current + 4 previous (cyclic)
+            for (let offset = 4; offset >= 0; offset--) {
+                const cardIndex = (this.currentIndex - offset + this.totalCards) % this.totalCards;
+                const card = this.data[cardIndex];
+                const cardDiv = document.createElement('div');
+                cardDiv.className = `stack-card pos-${offset}`;
+                cardDiv.innerHTML = `
+                    <img src="${card.thumb}" alt="${card.label}">
+                    <div class="card-label">${card.label}</div>
+                `;
+                // Open fullscreen on card click
+                cardDiv.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.openFullscreen(card.full, card.label);
+                });
+                this.stackArea.appendChild(cardDiv);
+            }
+        }
+
+        nextCard() {
+            this.currentIndex = (this.currentIndex + 1) % this.totalCards;
+            this.renderStack();
+        }
+
+        prevCard() {
+            this.currentIndex = (this.currentIndex - 1 + this.totalCards) % this.totalCards;
+            this.renderStack();
+        }
+
+        openFullscreen(fullUrl, label) {
+            const modal = document.getElementById('modalStack');
+            const modalImg = document.getElementById('modalStackImage');
+            const modalCaption = document.getElementById('modalStackCaption');
+            modalImg.src = fullUrl;
+            modalCaption.textContent = label;
+            modal.classList.add('active');
+        }
+    }
+
+    // ========== CREATE BOTH STACKS ==========
+    const districtsStack = new CardStack('districtsStack', 'districtsPrev', 'districtsNext', districtsData);
+    const placesStack = new CardStack('placesStack', 'placesPrev', 'placesNext', placesData);
+
+    // ========== MODAL CLOSE HANDLER ==========
+    const modal = document.getElementById('modalStack');
+    modal.addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.getElementById('modalStackImage').src = '';
+    });
+
+    // ========== KEYBOARD NAVIGATION ==========
+    let activeStack = districtsStack;
+    document.querySelectorAll('.stack-column').forEach(col => {
+        col.addEventListener('mouseenter', () => {
+            if (col.querySelector('.stack-area')?.id === 'districtsStack') activeStack = districtsStack;
+            else if (col.querySelector('.stack-area')?.id === 'placesStack') activeStack = placesStack;
+        });
+    });
+    document.addEventListener('keydown', (e) => {
+        if (modal.classList.contains('active')) {
+            if (e.key === 'Escape') modal.classList.remove('active');
+            return;
+        }
+        if (e.key === 'ArrowLeft') activeStack.prevCard();
+        if (e.key === 'ArrowRight') activeStack.nextCard();
+    });
+</script>
+</body>
+</html>
