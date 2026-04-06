@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌊🏄 Sandpoint — Welcome to Paradise</title>
+    <title>🌊 Sandpoint — Welcome to Paradise</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         /* ========== CALIFORNIA SUNSET THEME ========== */
@@ -22,7 +22,6 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         html { scroll-behavior: smooth; }
 
         body {
@@ -31,30 +30,80 @@
             color: var(--text-dark);
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* ========== DECORATIVE WAVES ========== */
-        .wave-bg {
+        /* ========== CALIFORNIA DECORATIVE ELEMENTS ========== */
+        .cali-decor {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            z-index: -1;
-            opacity: 0.4;
+            z-index: 0;
+            opacity: 0.08;
         }
-        .wave-bg::before {
-            content: "";
+
+        /* Palm trees */
+        .palm-1 {
+            top: 15%;
+            left: 3%;
+            font-size: 8rem;
+            transform: rotate(-15deg);
+            animation: sway 8s ease-in-out infinite;
+        }
+        .palm-2 {
+            bottom: 20%;
+            right: 2%;
+            font-size: 6rem;
+            transform: rotate(10deg);
+            animation: sway 10s ease-in-out infinite 2s;
+        }
+
+        /* Sun */
+        .sun {
+            top: 5%;
+            right: 10%;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, var(--gold) 0%, var(--sunset-orange) 70%, transparent 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 60px rgba(245, 197, 66, 0.4);
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        /* Waves */
+        .wave-decor {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200"><path fill="%234a90a4" fill-opacity="0.05" d="M0,100L48,110C96,120,192,140,288,135C384,130,480,100,576,95C672,90,768,110,864,120C960,130,1056,130,1152,120C1248,110,1344,90,1392,80L1440,70L1440,200L1392,200C1344,200,1248,200,1152,200C1056,200,960,200,864,200C768,200,672,200,576,200C480,200,384,200,288,200C192,200,96,200,48,200L0,200Z"></path></svg>') repeat-x bottom;
+            background-size: 1440px 200px;
+        }
+
+        /* Seagulls */
+        .seagull {
             position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(ellipse at center, 
-                rgba(245, 197, 66, 0.15) 0%, 
-                transparent 70%);
-            animation: float 20s ease-in-out infinite;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            animation: fly 20s linear infinite;
         }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(2%, 2%) rotate(1deg); }
-            66% { transform: translate(-1%, 3%) rotate(-1deg); }
+        .seagull-1 { top: 25%; left: 15%; animation-delay: 0s; }
+        .seagull-2 { top: 35%; left: 80%; animation-delay: 7s; }
+        .seagull-3 { top: 15%; left: 60%; animation-delay: 14s; }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-15deg); }
+            50% { transform: rotate(-5deg); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        @keyframes fly {
+            0% { transform: translateX(-100px) translateY(0); }
+            25% { transform: translateX(25vw) translateY(-20px); }
+            50% { transform: translateX(50vw) translateY(10px); }
+            75% { transform: translateX(75vw) translateY(-15px); }
+            100% { transform: translateX(calc(100vw + 100px)) translateY(0); }
         }
 
         /* ========== HERO SECTION ========== */
@@ -67,9 +116,9 @@
             text-align: center;
             padding: 40px 20px;
             background: linear-gradient(135deg, 
-                rgba(255, 140, 90, 0.1) 0%, 
-                rgba(245, 197, 66, 0.05) 50%,
-                rgba(74, 144, 164, 0.1) 100%);
+                rgba(255, 140, 90, 0.08) 0%, 
+                rgba(245, 197, 66, 0.04) 50%,
+                rgba(74, 144, 164, 0.08) 100%);
             overflow: hidden;
         }
 
@@ -223,7 +272,6 @@
             box-shadow: var(--card-shadow);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
-            group: card;
         }
 
         .card:hover {
@@ -268,12 +316,15 @@
 
         .card-title {
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--deep-ocean);
             margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .card-desc {
@@ -365,7 +416,10 @@
             font-weight: 600;
             color: var(--deep-ocean);
             margin-bottom: 4px;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .poi-desc {
@@ -373,6 +427,31 @@
             color: var(--text-dark);
             opacity: 0.7;
             flex: 1;
+        }
+
+        /* ========== SHADY PLACES SECTION ========== */
+        .shady-section {
+            background: linear-gradient(135deg, rgba(26,58,74,0.03) 0%, rgba(45,49,66,0.05) 100%);
+            border-top: 2px dashed rgba(255,107,107,0.2);
+        }
+
+        .shady-section .section-header h2 {
+            background: linear-gradient(135deg, var(--coral), var(--sunset-orange));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .shady-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,140,90,0.15));
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--coral);
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,107,107,0.3);
         }
 
         /* ========== MAP SECTION ========== */
@@ -423,11 +502,6 @@
             padding: 40px 20px;
             text-align: center;
             font-size: 0.9rem;
-        }
-
-        footer a {
-            color: var(--gold);
-            text-decoration: none;
         }
 
         /* ========== MODAL ========== */
@@ -500,6 +574,8 @@
             .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
             .poi-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
             .btn { width: 100%; max-width: 280px; }
+            .palm-1, .palm-2 { display: none; }
+            .sun { width: 80px; height: 80px; }
         }
 
         /* ========== SCROLL INDICATOR ========== */
@@ -532,8 +608,14 @@
 </head>
 <body>
 
-<!-- Decorative background -->
-<div class="wave-bg"></div>
+<!-- California decorative elements -->
+<div class="cali-decor palm-1">🌴</div>
+<div class="cali-decor palm-2">🌴</div>
+<div class="cali-decor sun"></div>
+<div class="cali-decor seagull seagull-1">🕊️</div>
+<div class="cali-decor seagull seagull-2">🕊️</div>
+<div class="cali-decor seagull seagull-3">🕊️</div>
+<div class="cali-decor wave-decor"></div>
 
 <!-- ========== HERO SECTION ========== -->
 <header class="hero">
@@ -557,12 +639,10 @@
         <p>From historic cores to beachfront escapes — each district has its own soul, its own rhythm, its own reason to fall in love.</p>
     </div>
 
-    <div class="grid" id="districtsGrid">
-        <!-- Cards will be injected by JS -->
-    </div>
+    <div class="grid" id="districtsGrid"></div>
 </section>
 
-<!-- ========== POI SECTION ========== -->
+<!-- ========== TOURIST ATTRACTIONS ========== -->
 <section id="poi" class="poi-section">
     <div class="section-header">
         <h2>✨ Must-Visit Places</h2>
@@ -570,9 +650,19 @@
         <p>Hidden gems, local favorites, and iconic landmarks — the spots that make Sandpoint unforgettable.</p>
     </div>
 
-    <div class="poi-grid" id="poiGrid">
-        <!-- Cards will be injected by JS -->
+    <div class="poi-grid" id="touristGrid"></div>
+</section>
+
+<!-- ========== SHADY PLACES ========== -->
+<section class="shady-section">
+    <div class="section-header">
+        <div class="shady-badge">⚠️ For the Adventurous Traveler</div>
+        <h2>🚫 Not Your Typical Tourist Spots</h2>
+        <div class="section-divider"></div>
+        <p>Look, we're not saying you <em>should</em> visit these places... but if you do, you'll definitely have stories to tell. <br><small style="opacity:0.7">(Visit at your own risk. We warned you.)</small></p>
     </div>
+
+    <div class="poi-grid" id="shadyGrid"></div>
 </section>
 
 <!-- ========== MAP SECTION ========== -->
@@ -590,8 +680,7 @@
 
 <!-- ========== FOOTER ========== -->
 <footer>
-    <p>Made with ☀️ for dreamers & wanderers • 
-    <a href="https://github.com/yourusername/sandpoint-gallery" target="_blank">View source</a></p>
+    <p>Made with ☀️ for dreamers & wanderers</p>
     <p style="margin-top:8px;opacity:0.6;font-size:0.85rem">Images © Sandpoint Archives • For personal & roleplay use</p>
 </footer>
 
@@ -605,40 +694,44 @@
 <script>
     // ========== DATA ==========
     const districtsData = [
-        { img: "images/Districts/Civic Center.png", label: "🏢 Civic Center", desc: "Administrative heart of the city" },
-        { img: "images/Districts/Westgate Industrial Park.png", label: "🏭 Westgate Industrial", desc: "Clean, modern industry zone" },
-        { img: "images/Districts/Cliffside Estates.png", label: "🏘️ Cliffside Estates", desc: "Gated community with ocean views" },
-        { img: "images/Districts/Coastal Plaza.png", label: "🏙️ Coastal Plaza", desc: "Modern shopping & dining hub" },
-        { img: "images/Districts/The Boardwalk.png", label: "🎡 The Boardwalk", desc: "Tourist promenade with street performers" },
-        { img: "images/Districts/Harborview.png", label: "🏙️ Harborview", desc: "Urban apartments overlooking the marina" },
-        { img: "images/Districts/Old Sandpoint.png", label: "🏛️ Old Sandpoint", desc: "Historic core with cobblestone streets" },
-        { img: "images/Districts/Pacific Heights.png", label: "🏡 Pacific Heights", desc: "Prestigious hillside homes" },
-        { img: "images/Districts/Sunswept Bay.png", label: "🏰 Sunswept Bay", desc: "Upscale villas with private beaches" },
-        { img: "images/Districts/Seagull Nest.png", label: "🏘️ Seagull Nest", desc: "Family-friendly neighborhood near the shore" },
-        { img: "images/Districts/Whispering Pines.png", label: "🏡 Whispering Pines", desc: "Quiet suburb nestled in coastal forest" },
-        { img: "images/Districts/Maple Grove.png", label: "🍁 Maple Grove", desc: "Tree-lined streets and community gardens" },
-        { img: "images/Districts/Redwood Gateway.png", label: "🌲 Redwood Gateway", desc: "Nature's threshold to the national reserve" },
-        { img: "images/Districts/Redwood National Reserve2.png", label: "🌲 Redwood Reserve", desc: "Protected wilderness with ancient trees" },
-        { img: "images/Districts/Driftwood Shores.png", label: "🏄 Driftwood Shores", desc: "Youthful beaches and surf culture" },
-        { img: "images/Districts/The Crossroads.png", label: "🛣️ The Crossroads", desc: "Highway entrance and travel hub" },
-        { img: "images/Districts/the Spills.png", label: "🏭 The Spills", desc: "Industrial decay turned street art canvas" },
-        { img: "images/Districts/Sandpoint Docks.png", label: "⚓ Sandpoint Docks", desc: "Working port with fresh catch daily" }
+        { img: "images/Districts/Civic%20Center.png", label: "Civic Center", desc: "Administrative heart of the city", icon: "🏢" },
+        { img: "images/Districts/Westgate%20Industrial%20Park.png", label: "Westgate Industrial Park", desc: "Clean, modern industry zone", icon: "🏭" },
+        { img: "images/Districts/Cliffside%20Estates.png", label: "Cliffside Estates", desc: "Gated community with ocean views", icon: "🏘️" },
+        { img: "images/Districts/Coastal%20Plaza.png", label: "Coastal Plaza", desc: "Modern shopping & dining hub", icon: "🏙️" },
+        { img: "images/Districts/The%20Boardwalk.png", label: "The Boardwalk", desc: "Tourist promenade with street performers", icon: "🎡" },
+        { img: "images/Districts/Harborview.png", label: "Harborview", desc: "Urban apartments overlooking the marina", icon: "🏙️" },
+        { img: "images/Districts/Old%20Sandpoint.png", label: "Old Sandpoint", desc: "Historic core with cobblestone streets", icon: "🏛️" },
+        { img: "images/Districts/Pacific%20Heights.png", label: "Pacific Heights", desc: "Prestigious hillside homes", icon: "🏡" },
+        { img: "images/Districts/Sunswept%20Bay.png", label: "Sunswept Bay", desc: "Upscale villas with private beaches", icon: "🏰" },
+        { img: "images/Districts/Seagull%20Nest.png", label: "Seagull Nest", desc: "Family-friendly neighborhood near the shore", icon: "🏘️" },
+        { img: "images/Districts/Whispering%20Pines.png", label: "Whispering Pines", desc: "Quiet suburb nestled in coastal forest", icon: "🏡" },
+        { img: "images/Districts/Maple%20Grove.png", label: "Maple Grove", desc: "Tree-lined streets and community gardens", icon: "🍁" },
+        { img: "images/Districts/Redwood%20Gateway.png", label: "Redwood Gateway", desc: "Nature's threshold to the national reserve", icon: "🌲" },
+        { img: "images/Districts/Redwood%20National%20Reserve2.png", label: "Redwood National Reserve", desc: "Protected wilderness with ancient trees", icon: "🌲" },
+        { img: "images/Districts/Driftwood%20Shores.png", label: "Driftwood Shores", desc: "Youthful beaches and surf culture", icon: "🏄" },
+        { img: "images/Districts/The%20Crossroads.png", label: "The Crossroads", desc: "Highway entrance and travel hub", icon: "🛣️" },
+        { img: "images/Districts/the%20Spills.png", label: "The Spills", desc: "Industrial decay turned street art canvas", icon: "🏭" },
+        { img: "images/Districts/Sandpoint%20Docks.png", label: "Sandpoint Docks", desc: "Working port with fresh catch daily", icon: "⚓" }
     ];
 
-    const poiData = [
-        { img: "images/PoI/Aphrodite's Touch.png", icon: "💄", label: "Aphrodite's Touch", desc: "Artisan perfumery & botanical spa" },
-        { img: "images/PoI/Coastal Fitness & Surf Club.png", icon: "💪", label: "Coastal Fitness", desc: "Premium gym & surf lessons" },
-        { img: "images/PoI/Prometheus Biosolutions.png", icon: "🧬", label: "Prometheus Bio", desc: "Cutting-edge research facility" },
-        { img: "images/PoI/Salty Pete's Seafood.png", icon: "🐟", label: "Salty Pete's", desc: "Abandoned warehouse with rumors..." },
-        { img: "images/PoI/Sandpoint Coast High School.png", icon: "🏫", label: "Coast High School", desc: "Main school with ocean-view classrooms" },
-        { img: "images/PoI/Sandpoint Fire Station #1.png", icon: "🚒", label: "Fire Station #1", desc: "Central firehouse, heroes in red" },
-        { img: "images/PoI/Sandpoint PD.png", icon: "👮", label: "Sandpoint PD", desc: "Police headquarters, keeping the peace" },
-        { img: "images/PoI/St. Catherine's Medical Center.png", icon: "🏥", label: "St. Catherine's", desc: "Main hospital with 24/7 care" },
-        { img: "images/PoI/The Last Call.png", icon: "🥃", label: "The Last Call", desc: "Gloomy dive for late-night stories" },
-        { img: "images/PoI/The Rustic Tap.png", icon: "🍻", label: "The Rustic Tap", desc: "Cozy ranger pub with local brews" },
-        { img: "images/PoI/The Witching Hour.png", icon: "🔮", label: "The Witching Hour", desc: "Bass-heavy club, opens at midnight" },
-        { img: "images/PoI/Tides Arena.png", icon: "🏟️", label: "Tides Arena", desc: "Sports venue & concert hall" },
-        { img: "images/PoI/Unstable Beans.png", icon: "☕", label: "Unstable Beans", desc: "Quirky café with experimental roasts" }
+    // Tourist attractions (normal places)
+    const touristData = [
+        { img: "images/PoI/Aphrodite%27s%20Touch.png", icon: "💄", label: "Aphrodite's Touch", desc: "Artisan perfumery & botanical spa" },
+        { img: "images/PoI/Coastal%20Fitness%20%26%20Surf%20Club.png", icon: "💪", label: "Coastal Fitness & Surf Club", desc: "Premium gym & surf lessons" },
+        { img: "images/PoI/Prometheus%20Biosolutions.png", icon: "🧬", label: "Prometheus Biosolutions", desc: "Cutting-edge research facility" },
+        { img: "images/PoI/Sandpoint%20Coast%20High%20School.png", icon: "🏫", label: "Sandpoint Coast High School", desc: "Main school with ocean-view classrooms" },
+        { img: "images/PoI/The%20Rustic%20Tap.png", icon: "🍻", label: "The Rustic Tap", desc: "Cozy ranger pub with local brews" },
+        { img: "images/PoI/The%20Witching%20Hour.png", icon: "🔮", label: "The Witching Hour", desc: "Bass-heavy club, opens at midnight" },
+        { img: "images/PoI/Tides%20Arena.png", icon: "🏟️", label: "Tides Arena", desc: "Sports venue & concert hall" },
+        { img: "images/PoI/Unstable%20Beans.png", icon: "☕", label: "Unstable Beans", desc: "Quirky café with experimental roasts" }
+    ];
+
+    // Shady/sketchy places
+    const shadyData = [
+        { img: "images/PoI/Salty%20Pete%27s%20Seafood.png", icon: "🐟", label: "Salty Pete's Seafood", desc: "Abandoned warehouse. Smells like fish and bad decisions. Rumored midnight meetings." },
+        { img: "images/PoI/Sandpoint%20Fire%20Station%20%231.png", icon: "🚒", label: "Sandpoint Fire Station #1", desc: "Central firehouse. Visit only if you enjoy sirens and emergency protocols." },
+        { img: "images/PoI/Sandpoint%20PD.png", icon: "👮", label: "Sandpoint PD", desc: "Police headquarters. Great for tours if you're into... legal activities." },
+        { img: "images/PoI/St.%20Catherine%27s%20Medical%20Center.png", icon: "🏥", label: "St. Catherine's Medical Center", desc: "Main hospital. 24/7 care. Come for the medical attention, stay because you have to." }
     ];
 
     // ========== RENDER CARDS ==========
@@ -649,12 +742,12 @@
             card.className = 'card';
             card.innerHTML = `
                 <div class="card-image">
-                    <img src="${item.img}" alt="${item.label}" loading="${i < 6 ? 'eager' : 'lazy'}">
+                    <img src="${item.img}" alt="${item.label}" loading="${i < 6 ? 'eager' : 'lazy'}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22280%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EImage not found%3C/text%3E%3C/svg%3E'">
                     <span class="card-badge">District</span>
                     <div class="card-overlay"><span>🔍 Click to enlarge</span></div>
                 </div>
                 <div class="card-content">
-                    <div class="card-title">${item.label}</div>
+                    <div class="card-title">${item.icon} ${item.label}</div>
                     <div class="card-desc">${item.desc}</div>
                 </div>
             `;
@@ -663,19 +756,42 @@
         });
     }
 
-    function renderPOI() {
-        const grid = document.getElementById('poiGrid');
-        poiData.forEach((item, i) => {
+    function renderTourist() {
+        const grid = document.getElementById('touristGrid');
+        touristData.forEach((item, i) => {
             const card = document.createElement('div');
             card.className = 'poi-card';
             card.innerHTML = `
                 <div class="poi-image">
-                    <img src="${item.img}" alt="${item.label}" loading="${i < 4 ? 'eager' : 'lazy'}">
+                    <img src="${item.img}" alt="${item.label}" loading="${i < 4 ? 'eager' : 'lazy'}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22160%22%3E%3Crect fill=%22%23ddd%22 width=%22240%22 height=%22160%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EImage not found%3C/text%3E%3C/svg%3E'">
                 </div>
                 <div class="poi-content">
                     <div class="poi-icon">${item.icon}</div>
                     <div class="poi-title">${item.label}</div>
                     <div class="poi-desc">${item.desc}</div>
+                </div>
+            `;
+            card.addEventListener('click', () => openModal(item.img, item.label));
+            grid.appendChild(card);
+        });
+    }
+
+    function renderShady() {
+        const grid = document.getElementById('shadyGrid');
+        shadyData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'poi-card';
+            card.style.borderColor = 'rgba(255,107,107,0.3)';
+            card.style.borderWidth = '2px';
+            card.style.borderStyle = 'dashed';
+            card.innerHTML = `
+                <div class="poi-image">
+                    <img src="${item.img}" alt="${item.label}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22160%22%3E%3Crect fill=%22%23ddd%22 width=%22240%22 height=%22160%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EImage not found%3C/text%3E%3C/svg%3E'">
+                </div>
+                <div class="poi-content">
+                    <div class="poi-icon">${item.icon}</div>
+                    <div class="poi-title">${item.label}</div>
+                    <div class="poi-desc" style="color:var(--coral);opacity:0.9">${item.desc}</div>
                 </div>
             `;
             card.addEventListener('click', () => openModal(item.img, item.label));
@@ -711,7 +827,7 @@
         }
     });
 
-    // ========== SMOOTH SCROLL FOR ANCHORS ==========
+    // ========== SMOOTH SCROLL ==========
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -725,7 +841,8 @@
     // ========== INIT ==========
     document.addEventListener('DOMContentLoaded', () => {
         renderDistricts();
-        renderPOI();
+        renderTourist();
+        renderShady();
     });
 </script>
 </body>
