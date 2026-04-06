@@ -1,265 +1,731 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sandpoint — City Cards</title>
+    <title>🌊🏄 Sandpoint — Welcome to Paradise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* ========== MAIN STYLES ========== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(135deg, #0a1920 0%, #0d2b2e 100%);
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-            padding: 30px 20px;
-            color: #eee;
+        /* ========== CALIFORNIA SUNSET THEME ========== */
+        :root {
+            --sand: #fff9f0;
+            --coral: #ff6b6b;
+            --gold: #f5c542;
+            --ocean: #4a90a4;
+            --deep-ocean: #1a3a4a;
+            --sunset-orange: #ff8c5a;
+            --sunset-pink: #ff6b9d;
+            --text-dark: #2d3142;
+            --text-light: #f8f9fa;
+            --card-shadow: 0 10px 40px rgba(26, 58, 74, 0.15);
+            --card-hover: 0 20px 60px rgba(255, 107, 107, 0.25);
         }
-        .city-container { max-width: 1400px; margin: 0 auto; }
-        .city-header { text-align: center; margin-bottom: 45px; }
-        .city-header h1 {
-            font-size: 3rem;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(180deg, var(--sand) 0%, #fff 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ========== DECORATIVE WAVES ========== */
+        .wave-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.4;
+        }
+        .wave-bg::before {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse at center, 
+                rgba(245, 197, 66, 0.15) 0%, 
+                transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, 2%) rotate(1deg); }
+            66% { transform: translate(-1%, 3%) rotate(-1deg); }
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, 
+                rgba(255, 140, 90, 0.1) 0%, 
+                rgba(245, 197, 66, 0.05) 50%,
+                rgba(74, 144, 164, 0.1) 100%);
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 120px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120"><path fill="%23fff9f0" fill-opacity="1" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--ocean);
+            box-shadow: 0 4px 20px rgba(74, 144, 164, 0.15);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--deep-ocean), var(--ocean), var(--sunset-orange));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 12px;
-            text-shadow: 0 2px 10px rgba(255,215,0,0.3);
+            animation: fadeInUp 0.6s ease 0.1s both;
         }
-        .city-header p { color: #FFD700; font-size: 1rem; letter-spacing: 1px; opacity: 0.9; }
-        .stacks-wrapper { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 20px; }
-        .stack-column {
-            flex: 1; min-width: 360px;
-            background: rgba(10, 25, 32, 0.6);
-            border-radius: 28px; padding: 24px 18px;
+
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            color: var(--text-dark);
+            opacity: 0.85;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease 0.3s both;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--sunset-orange), var(--coral));
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--ocean);
+            border: 2px solid var(--ocean);
+        }
+        .btn-secondary:hover {
+            background: var(--ocean);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== SECTION STYLES ========== */
+        section {
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            color: var(--deep-ocean);
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            color: var(--text-dark);
+            opacity: 0.75;
+            font-size: 1.1rem;
+        }
+
+        .section-divider {
+            height: 3px;
+            width: 80px;
+            background: linear-gradient(90deg, var(--gold), var(--sunset-orange));
+            margin: 24px auto;
+            border-radius: 3px;
+        }
+
+        /* ========== DISTRICTS GRID ========== */
+        .districts-section {
+            background: white;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            background: white;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            group: card;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--card-hover);
+            z-index: 10;
+        }
+
+        .card-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.1);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--ocean);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--deep-ocean);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            opacity: 0.75;
+            line-height: 1.5;
+        }
+
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(26,58,74,0.8), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+        }
+
+        .card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card-overlay span {
+            color: white;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        /* ========== POI SECTION ========== */
+        .poi-section {
+            background: linear-gradient(180deg, var(--sand) 0%, white 100%);
+        }
+
+        .poi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .poi-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .poi-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--card-hover);
+        }
+
+        .poi-image {
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .poi-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .poi-card:hover .poi-image img {
+            transform: scale(1.08);
+        }
+
+        .poi-content {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .poi-icon {
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .poi-title {
+            font-weight: 600;
+            color: var(--deep-ocean);
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+
+        .poi-desc {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            opacity: 0.7;
+            flex: 1;
+        }
+
+        /* ========== MAP SECTION ========== */
+        .map-section {
+            background: var(--deep-ocean);
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .map-section .section-header h2 {
+            color: white;
+        }
+
+        .map-section .section-header p {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .map-placeholder {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 60px 40px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 24px;
+            border: 2px dashed rgba(255,255,255,0.2);
+        }
+
+        .map-placeholder p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 24px;
+        }
+
+        .map-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: none;
+            transition: gap 0.3s ease;
+        }
+        .map-cta:hover { gap: 14px; }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--deep-ocean);
+            color: rgba(255,255,255,0.7);
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 25, 32, 0.96);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            cursor: zoom-out;
+            animation: modalFade 0.3s ease;
+        }
+
+        .modal.active { display: flex; }
+
+        @keyframes modalFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal img {
+            max-width: 95%;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            object-fit: contain;
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: 30px;
+            left: 0; right: 0;
+            text-align: center;
+            color: white;
+            background: rgba(0,0,0,0.6);
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
         }
-        .stack-title {
-            text-align: center; font-size: 1.4rem; font-weight: 600;
-            margin-bottom: 25px; padding-bottom: 10px;
-            border-bottom: 2px solid #FFD700;
-            display: inline-block; width: 100%; color: #FFD700;
+
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.15);
+            transition: background 0.2s ease;
         }
-        .stack-title span {
-            background: #FFD700; color: #0a1920;
-            padding: 4px 12px; border-radius: 30px;
-            font-size: 0.8rem; margin-left: 10px; font-weight: bold;
+        .modal-close:hover { background: rgba(255,107,107,0.8); }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            section { padding: 70px 20px; }
+            .hero { min-height: auto; padding: 80px 20px 120px; }
+            .hero::after { height: 80px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+            .poi-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+            .btn { width: 100%; max-width: 280px; }
         }
-        .stack-player { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 10px 0; }
-        .arrow-btn {
-            background: rgba(30, 50, 45, 0.8);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 40px; width: 44px; height: 44px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s ease;
-            color: #FFD700; font-size: 24px; font-weight: 300;
-            backdrop-filter: blur(4px);
+
+        /* ========== SCROLL INDICATOR ========== */
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--ocean);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
         }
-        .arrow-btn:hover { background: #FFD700; color: #0a1920; border-color: #FFD700; transform: scale(1.05); }
-        .arrow-btn:active { transform: scale(0.95); }
-        .stack-area { position: relative; width: 280px; height: 210px; cursor: pointer; flex-shrink: 0; }
-        .stack-card {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: 14px; overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            background: #1a2a2a; border: 1px solid rgba(255, 215, 0, 0.15);
-            backface-visibility: hidden; user-select: none;
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
         }
-        .stack-card.pos-0 { transform: rotate(-5deg) translateX(-5px) translateY(-3px); z-index: 1; }
-        .stack-card.pos-1 { transform: rotate(3deg) translateX(4px) translateY(-1px); z-index: 2; }
-        .stack-card.pos-2 { transform: rotate(-2deg) translateX(-2px) translateY(1px); z-index: 3; }
-        .stack-card.pos-3 { transform: rotate(4deg) translateX(5px) translateY(3px); z-index: 4; }
-        .stack-card.pos-4 { transform: rotate(-3deg) translateX(-4px) translateY(5px); z-index: 5; }
-        .stack-area:hover .stack-card { box-shadow: 0 12px 28px rgba(0,0,0,0.5); }
-        .stack-area:hover .stack-card.pos-0 { transform: translateX(-22px) translateY(-8px) rotate(-8deg) scale(1.02); z-index: 10; }
-        .stack-area:hover .stack-card.pos-1 { transform: translateX(-6px) translateY(-12px) rotate(-3deg) scale(1.02); z-index: 9; }
-        .stack-area:hover .stack-card.pos-2 { transform: translateX(0px) translateY(-14px) rotate(0deg) scale(1.02); z-index: 8; }
-        .stack-area:hover .stack-card.pos-3 { transform: translateX(6px) translateY(-9px) rotate(3deg) scale(1.02); z-index: 7; }
-        .stack-area:hover .stack-card.pos-4 { transform: translateX(20px) translateY(-4px) rotate(6deg) scale(1.02); z-index: 6; }
-        .stack-card:hover {
-            transform: translateX(0) translateY(-28px) rotate(0deg) scale(1.07) !important;
-            z-index: 20 !important;
-            box-shadow: 0 22px 38px rgba(0,0,0,0.6);
-            transition: all 0.25s ease-out;
+        .scroll-hint span {
+            font-size: 0.8rem;
+            font-weight: 500;
         }
-        .stack-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-        .stack-card .card-label {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            padding: 25px 8px 8px; color: white;
-            font-size: 11px; font-weight: 500; text-align: center; pointer-events: none;
-        }
-        .navigation-hint { text-align: center; font-size: 10px; color: #FFD700; opacity: 0.6; margin-top: 15px; letter-spacing: 0.5px; }
-        .modal-stack {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 10000;
-            justify-content: center; align-items: center; cursor: pointer;
-        }
-        .modal-stack.active { display: flex; }
-        .modal-stack img { max-width: 90%; max-height: 85%; border-radius: 12px; object-fit: contain; }
-        .modal-stack .modal-caption {
-            position: absolute; bottom: 20px; left: 0; right: 0;
-            text-align: center; color: #FFD700;
-            background: rgba(0,0,0,0.7); padding: 12px; font-size: 15px;
-        }
-        @media (max-width: 900px) {
-            .stack-area { width: 240px; height: 180px; }
-            .arrow-btn { width: 38px; height: 38px; font-size: 18px; }
-            .stack-column { min-width: 320px; }
-        }
-        @media (max-width: 800px) {
-            .stacks-wrapper { flex-direction: column; align-items: center; }
+        .scroll-hint::after {
+            content: "↓";
+            font-size: 1.5rem;
         }
     </style>
 </head>
 <body>
 
-<div class="city-container">
-    <div class="city-header">
-        <h1>🌊🏄 Sandpoint 🏖️☀️</h1>
-        <p>A sun-kissed haven for surfers and dreamers.</p>
-    </div>
-    <div class="stacks-wrapper">
-        <!-- LEFT STACK: DISTRICTS (18 cards) -->
-        <div class="stack-column">
-            <div class="stack-title">🏄‍♂️🌴 Districts <span>18</span></div>
-            <div class="stack-player">
-                <div class="arrow-btn" id="districtsPrev">◀</div>
-                <div class="stack-area" id="districtsStack"></div>
-                <div class="arrow-btn" id="districtsNext">▶</div>
-            </div>
-            <div class="navigation-hint">🖱️ Click / scroll / swipe / arrows → flip cards</div>
-        </div>
-        <!-- RIGHT STACK: POINTS OF INTEREST (13 cards) -->
-        <div class="stack-column">
-            <div class="stack-title">📍✨ Points of Interest <span>13</span></div>
-            <div class="stack-player">
-                <div class="arrow-btn" id="placesPrev">◀</div>
-                <div class="stack-area" id="placesStack"></div>
-                <div class="arrow-btn" id="placesNext">▶</div>
-            </div>
-            <div class="navigation-hint">🖱️ Click / scroll / swipe / arrows → flip cards</div>
-        </div>
-    </div>
-</div>
+<!-- Decorative background -->
+<div class="wave-bg"></div>
 
-<!-- MODAL WINDOW -->
-<div id="modalStack" class="modal-stack">
-    <img id="modalStackImage" src="">
-    <div class="modal-caption" id="modalStackCaption"></div>
+<!-- ========== HERO SECTION ========== -->
+<header class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">🌴 Welcome to Paradise</div>
+        <h1>Sandpoint</h1>
+        <p>A sun-kissed coastal haven where surfers ride golden waves, dreamers chase sunsets, and every street tells a story.</p>
+        <div class="hero-cta">
+            <a href="#districts" class="btn btn-primary">Explore Districts</a>
+            <a href="#poi" class="btn btn-secondary">See Highlights</a>
+        </div>
+    </div>
+    <div class="scroll-hint"><span>Scroll to explore</span></div>
+</header>
+
+<!-- ========== DISTRICTS SECTION ========== -->
+<section id="districts" class="districts-section">
+    <div class="section-header">
+        <h2>🏘️ Discover the Neighborhoods</h2>
+        <div class="section-divider"></div>
+        <p>From historic cores to beachfront escapes — each district has its own soul, its own rhythm, its own reason to fall in love.</p>
+    </div>
+
+    <div class="grid" id="districtsGrid">
+        <!-- Cards will be injected by JS -->
+    </div>
+</section>
+
+<!-- ========== POI SECTION ========== -->
+<section id="poi" class="poi-section">
+    <div class="section-header">
+        <h2>✨ Must-Visit Places</h2>
+        <div class="section-divider"></div>
+        <p>Hidden gems, local favorites, and iconic landmarks — the spots that make Sandpoint unforgettable.</p>
+    </div>
+
+    <div class="poi-grid" id="poiGrid">
+        <!-- Cards will be injected by JS -->
+    </div>
+</section>
+
+<!-- ========== MAP SECTION ========== -->
+<section class="map-section">
+    <div class="section-header">
+        <h2>🗺️ Plan Your Visit</h2>
+        <div class="section-divider"></div>
+        <p>Ready to experience Sandpoint in person? We'd love to welcome you.</p>
+    </div>
+    <div class="map-placeholder">
+        <p>📍 Interactive map coming soon!</p>
+        <a href="#" class="map-cta">Get travel tips →</a>
+    </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+    <p>Made with ☀️ for dreamers & wanderers • 
+    <a href="https://github.com/yourusername/sandpoint-gallery" target="_blank">View source</a></p>
+    <p style="margin-top:8px;opacity:0.6;font-size:0.85rem">Images © Sandpoint Archives • For personal & roleplay use</p>
+</footer>
+
+<!-- ========== MODAL ========== -->
+<div class="modal" id="imageModal">
+    <span class="modal-close" id="modalClose">×</span>
+    <img id="modalImage" src="" alt="">
+    <div class="modal-caption" id="modalCaption"></div>
 </div>
 
 <script>
-    // ========== DISTRICTS DATA (18 cards) ==========
+    // ========== DATA ==========
     const districtsData = [
-        { thumb: "images/Districts/Civic Center.png", full: "images/Districts/Civic Center.png", label: "🏢 Civic Center – Administrative district" },
-        { thumb: "images/Districts/Westgate Industrial Park.png", full: "images/Districts/Westgate Industrial Park.png", label: "🏭 Westgate Industrial Park – Clean industry" },
-        { thumb: "images/Districts/Cliffside Estates.png", full: "images/Districts/Cliffside Estates.png", label: "🏘️ Cliffside Estates – Gated community" },
-        { thumb: "images/Districts/Coastal Plaza.png", full: "images/Districts/Coastal Plaza.png", label: "🏙️ Coastal Plaza – Modern hub" },
-        { thumb: "images/Districts/The Boardwalk.png", full: "images/Districts/The Boardwalk.png", label: "🎡 The Boardwalk – Tourist promenade" },
-        { thumb: "images/Districts/Harborview.png", full: "images/Districts/Harborview.png", label: "🏙️ Harborview – Urban apartments" },
-        { thumb: "images/Districts/Old Sandpoint.png", full: "images/Districts/Old Sandpoint.png", label: "🏛️ Old Sandpoint – Historic core" },
-        { thumb: "images/Districts/Pacific Heights.png", full: "images/Districts/Pacific Heights.png", label: "🏡 Pacific Heights – Prestigious homes" },
-        { thumb: "images/Districts/Sunswept Bay.png", full: "images/Districts/Sunswept Bay.png", label: "🏰 Sunswept Bay – Upscale villas" },
-        { thumb: "images/Districts/Seagull Nest.png", full: "images/Districts/Seagull Nest.png", label: "🏘️ Seagull Nest – Family-friendly neighborhood" },
-        { thumb: "images/Districts/Whispering Pines.png", full: "images/Districts/Whispering Pines.png", label: "🏡 Whispering Pines – Family suburb" },
-        { thumb: "images/Districts/Maple Grove.png", full: "images/Districts/Maple Grove.png", label: "🍁 Maple Grove – Quiet streets" },
-        { thumb: "images/Districts/Redwood Gateway.png", full: "images/Districts/Redwood Gateway.png", label: "🌲 Redwood Gateway – Nature's threshold" },
-        { thumb: "images/Districts/Redwood National Reserve2.png", full: "images/Districts/Redwood National Reserve2.png", label: "🌲 Redwood National Reserve – Protected wilderness" },
-        { thumb: "images/Districts/Driftwood Shores.png", full: "images/Districts/Driftwood Shores.png", label: "🏄 Driftwood Shores – Youthful beaches" },
-        { thumb: "images/Districts/The Crossroads.png", full: "images/Districts/The Crossroads.png", label: "🛣️ The Crossroads – Highway entrance" },
-        { thumb: "images/Districts/the Spills.png", full: "images/Districts/the Spills.png", label: "🏭 The Spills – Industrial decay" },
-        { thumb: "images/Districts/Sandpoint Docks.png", full: "images/Districts/Sandpoint Docks.png", label: "⚓ Sandpoint Docks – Working port" }
+        { img: "images/Districts/Civic Center.png", label: "🏢 Civic Center", desc: "Administrative heart of the city" },
+        { img: "images/Districts/Westgate Industrial Park.png", label: "🏭 Westgate Industrial", desc: "Clean, modern industry zone" },
+        { img: "images/Districts/Cliffside Estates.png", label: "🏘️ Cliffside Estates", desc: "Gated community with ocean views" },
+        { img: "images/Districts/Coastal Plaza.png", label: "🏙️ Coastal Plaza", desc: "Modern shopping & dining hub" },
+        { img: "images/Districts/The Boardwalk.png", label: "🎡 The Boardwalk", desc: "Tourist promenade with street performers" },
+        { img: "images/Districts/Harborview.png", label: "🏙️ Harborview", desc: "Urban apartments overlooking the marina" },
+        { img: "images/Districts/Old Sandpoint.png", label: "🏛️ Old Sandpoint", desc: "Historic core with cobblestone streets" },
+        { img: "images/Districts/Pacific Heights.png", label: "🏡 Pacific Heights", desc: "Prestigious hillside homes" },
+        { img: "images/Districts/Sunswept Bay.png", label: "🏰 Sunswept Bay", desc: "Upscale villas with private beaches" },
+        { img: "images/Districts/Seagull Nest.png", label: "🏘️ Seagull Nest", desc: "Family-friendly neighborhood near the shore" },
+        { img: "images/Districts/Whispering Pines.png", label: "🏡 Whispering Pines", desc: "Quiet suburb nestled in coastal forest" },
+        { img: "images/Districts/Maple Grove.png", label: "🍁 Maple Grove", desc: "Tree-lined streets and community gardens" },
+        { img: "images/Districts/Redwood Gateway.png", label: "🌲 Redwood Gateway", desc: "Nature's threshold to the national reserve" },
+        { img: "images/Districts/Redwood National Reserve2.png", label: "🌲 Redwood Reserve", desc: "Protected wilderness with ancient trees" },
+        { img: "images/Districts/Driftwood Shores.png", label: "🏄 Driftwood Shores", desc: "Youthful beaches and surf culture" },
+        { img: "images/Districts/The Crossroads.png", label: "🛣️ The Crossroads", desc: "Highway entrance and travel hub" },
+        { img: "images/Districts/the Spills.png", label: "🏭 The Spills", desc: "Industrial decay turned street art canvas" },
+        { img: "images/Districts/Sandpoint Docks.png", label: "⚓ Sandpoint Docks", desc: "Working port with fresh catch daily" }
     ];
 
-    // ========== POINTS OF INTEREST DATA (13 cards) ==========
-    const placesData = [
-        { thumb: "images/PoI/Aphrodite's Touch.png", full: "images/PoI/Aphrodite's Touch.png", label: "💄 Aphrodite's Touch – Artisan perfumery" },
-        { thumb: "images/PoI/Coastal Fitness & Surf Club.png", full: "images/PoI/Coastal Fitness & Surf Club.png", label: "💪 Coastal Fitness & Surf Club – Premium complex" },
-        { thumb: "images/PoI/Prometheus Biosolutions.png", full: "images/PoI/Prometheus Biosolutions.png", label: "🧬 Prometheus Biosolutions – Cutting-edge research" },
-        { thumb: "images/PoI/Salty Pete's Seafood.png", full: "images/PoI/Salty Pete's Seafood.png", label: "🐟 Salty Pete's Seafood – Abandoned warehouse" },
-        { thumb: "images/PoI/Sandpoint Coast High School.png", full: "images/PoI/Sandpoint Coast High School.png", label: "🏫 Sandpoint Coast High School – Main school" },
-        { thumb: "images/PoI/Sandpoint Fire Station #1.png", full: "images/PoI/Sandpoint Fire Station #1.png", label: "🚒 Sandpoint Fire Station #1 – Central firehouse" },
-        { thumb: "images/PoI/Sandpoint PD.png", full: "images/PoI/Sandpoint PD.png", label: "👮 Sandpoint PD – Police headquarters" },
-        { thumb: "images/PoI/St. Catherine's Medical Center.png", full: "images/PoI/St. Catherine's Medical Center.png", label: "🏥 St. Catherine's Medical Center – Main hospital" },
-        { thumb: "images/PoI/The Last Call.png", full: "images/PoI/The Last Call.png", label: "🥃 The Last Call – Gloomy dive" },
-        { thumb: "images/PoI/The Rustic Tap.png", full: "images/PoI/The Rustic Tap.png", label: "🍻 The Rustic Tap – Ranger pub" },
-        { thumb: "images/PoI/The Witching Hour.png", full: "images/PoI/The Witching Hour.png", label: "🔮 The Witching Hour – Bass-heavy club" },
-        { thumb: "images/PoI/Tides Arena.png", full: "images/PoI/Tides Arena.png", label: "🏟️ Tides Arena – Sports venue" },
-        { thumb: "images/PoI/Unstable Beans.png", full: "images/PoI/Unstable Beans.png", label: "☕ Unstable Beans – Quirky café" }
+    const poiData = [
+        { img: "images/PoI/Aphrodite's Touch.png", icon: "💄", label: "Aphrodite's Touch", desc: "Artisan perfumery & botanical spa" },
+        { img: "images/PoI/Coastal Fitness & Surf Club.png", icon: "💪", label: "Coastal Fitness", desc: "Premium gym & surf lessons" },
+        { img: "images/PoI/Prometheus Biosolutions.png", icon: "🧬", label: "Prometheus Bio", desc: "Cutting-edge research facility" },
+        { img: "images/PoI/Salty Pete's Seafood.png", icon: "🐟", label: "Salty Pete's", desc: "Abandoned warehouse with rumors..." },
+        { img: "images/PoI/Sandpoint Coast High School.png", icon: "🏫", label: "Coast High School", desc: "Main school with ocean-view classrooms" },
+        { img: "images/PoI/Sandpoint Fire Station #1.png", icon: "🚒", label: "Fire Station #1", desc: "Central firehouse, heroes in red" },
+        { img: "images/PoI/Sandpoint PD.png", icon: "👮", label: "Sandpoint PD", desc: "Police headquarters, keeping the peace" },
+        { img: "images/PoI/St. Catherine's Medical Center.png", icon: "🏥", label: "St. Catherine's", desc: "Main hospital with 24/7 care" },
+        { img: "images/PoI/The Last Call.png", icon: "🥃", label: "The Last Call", desc: "Gloomy dive for late-night stories" },
+        { img: "images/PoI/The Rustic Tap.png", icon: "🍻", label: "The Rustic Tap", desc: "Cozy ranger pub with local brews" },
+        { img: "images/PoI/The Witching Hour.png", icon: "🔮", label: "The Witching Hour", desc: "Bass-heavy club, opens at midnight" },
+        { img: "images/PoI/Tides Arena.png", icon: "🏟️", label: "Tides Arena", desc: "Sports venue & concert hall" },
+        { img: "images/PoI/Unstable Beans.png", icon: "☕", label: "Unstable Beans", desc: "Quirky café with experimental roasts" }
     ];
 
-    // ========== UNIVERSAL CARD STACK CLASS ==========
-    class CardStack {
-        constructor(stackAreaId, prevBtnId, nextBtnId, data) {
-            this.stackArea = document.getElementById(stackAreaId);
-            this.prevBtn = document.getElementById(prevBtnId);
-            this.nextBtn = document.getElementById(nextBtnId);
-            this.data = data;
-            this.currentIndex = 0;
-            this.totalCards = data.length;
-            this.init();
-        }
-        init() {
-            this.renderStack();
-            this.prevBtn.addEventListener('click', (e) => { e.stopPropagation(); this.prevCard(); });
-            this.nextBtn.addEventListener('click', (e) => { e.stopPropagation(); this.nextCard(); });
-            this.stackArea.addEventListener('click', () => this.nextCard());
-            this.stackArea.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                if (e.deltaY > 0) this.nextCard(); else this.prevCard();
-            });
-            let startX = 0, isDragging = false;
-            this.stackArea.addEventListener('mousedown', (e) => {
-                startX = e.clientX; isDragging = true; this.stackArea.style.cursor = 'grabbing';
-            });
-            window.addEventListener('mouseup', (e) => {
-                if (!isDragging) return;
-                isDragging = false; this.stackArea.style.cursor = 'pointer';
-                const diff = e.clientX - startX;
-                if (Math.abs(diff) > 40) { if (diff > 0) this.prevCard(); else this.nextCard(); }
-            });
-            this.stackArea.addEventListener('mouseleave', () => { isDragging = false; this.stackArea.style.cursor = 'pointer'; });
-        }
-        renderStack() {
-            this.stackArea.innerHTML = '';
-            for (let offset = 4; offset >= 0; offset--) {
-                const cardIndex = (this.currentIndex - offset + this.totalCards) % this.totalCards;
-                const card = this.data[cardIndex];
-                const cardDiv = document.createElement('div');
-                cardDiv.className = `stack-card pos-${offset}`;
-                cardDiv.innerHTML = `<img src="${card.thumb}" alt="${card.label}"><div class="card-label">${card.label}</div>`;
-                cardDiv.addEventListener('click', (e) => { e.stopPropagation(); this.openFullscreen(card.full, card.label); });
-                this.stackArea.appendChild(cardDiv);
-            }
-        }
-        nextCard() { this.currentIndex = (this.currentIndex + 1) % this.totalCards; this.renderStack(); }
-        prevCard() { this.currentIndex = (this.currentIndex - 1 + this.totalCards) % this.totalCards; this.renderStack(); }
-        openFullscreen(fullUrl, label) {
-            const modal = document.getElementById('modalStack');
-            const modalImg = document.getElementById('modalStackImage');
-            const modalCaption = document.getElementById('modalStackCaption');
-            modalImg.src = fullUrl; modalCaption.textContent = label; modal.classList.add('active');
-        }
+    // ========== RENDER CARDS ==========
+    function renderDistricts() {
+        const grid = document.getElementById('districtsGrid');
+        districtsData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="card-image">
+                    <img src="${item.img}" alt="${item.label}" loading="${i < 6 ? 'eager' : 'lazy'}">
+                    <span class="card-badge">District</span>
+                    <div class="card-overlay"><span>🔍 Click to enlarge</span></div>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">${item.label}</div>
+                    <div class="card-desc">${item.desc}</div>
+                </div>
+            `;
+            card.addEventListener('click', () => openModal(item.img, item.label));
+            grid.appendChild(card);
+        });
     }
 
-    const districtsStack = new CardStack('districtsStack', 'districtsPrev', 'districtsNext', districtsData);
-    const placesStack = new CardStack('placesStack', 'placesPrev', 'placesNext', placesData);
-
-    const modal = document.getElementById('modalStack');
-    modal.addEventListener('click', () => { modal.classList.remove('active'); document.getElementById('modalStackImage').src = ''; });
-
-    let activeStack = districtsStack;
-    document.querySelectorAll('.stack-column').forEach(col => {
-        col.addEventListener('mouseenter', () => {
-            if (col.querySelector('.stack-area')?.id === 'districtsStack') activeStack = districtsStack;
-            else if (col.querySelector('.stack-area')?.id === 'placesStack') activeStack = placesStack;
+    function renderPOI() {
+        const grid = document.getElementById('poiGrid');
+        poiData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'poi-card';
+            card.innerHTML = `
+                <div class="poi-image">
+                    <img src="${item.img}" alt="${item.label}" loading="${i < 4 ? 'eager' : 'lazy'}">
+                </div>
+                <div class="poi-content">
+                    <div class="poi-icon">${item.icon}</div>
+                    <div class="poi-title">${item.label}</div>
+                    <div class="poi-desc">${item.desc}</div>
+                </div>
+            `;
+            card.addEventListener('click', () => openModal(item.img, item.label));
+            grid.appendChild(card);
         });
+    }
+
+    // ========== MODAL ==========
+    function openModal(src, caption) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCap = document.getElementById('modalCaption');
+        modalImg.src = src;
+        modalCap.textContent = caption;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('imageModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => { document.getElementById('modalImage').src = ''; }, 300);
+    }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('imageModal').addEventListener('click', (e) => {
+        if (e.target.id === 'imageModal') closeModal();
     });
     document.addEventListener('keydown', (e) => {
-        if (modal.classList.contains('active')) { if (e.key === 'Escape') modal.classList.remove('active'); return; }
-        if (e.key === 'ArrowLeft') activeStack.prevCard();
-        if (e.key === 'ArrowRight') activeStack.nextCard();
+        if (e.key === 'Escape' && document.getElementById('imageModal').classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // ========== SMOOTH SCROLL FOR ANCHORS ==========
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    // ========== INIT ==========
+    document.addEventListener('DOMContentLoaded', () => {
+        renderDistricts();
+        renderPOI();
     });
 </script>
 </body>
