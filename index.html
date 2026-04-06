@@ -6,18 +6,18 @@
     <title>🌊 Sandpoint — Welcome to Paradise</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* ========== CALIFORNIA SUNSET THEME ========== */
+        /* ========== CALIFORNIA SAND THEME ========== */
         :root {
-            --sand: #fff9f0;
+            --sand-top: #fdf6e3;
+            --sand-mid: #faebd7;
+            --sand-bot: #f0e0c6;
             --coral: #ff6b6b;
             --gold: #f5c542;
             --ocean: #4a90a4;
             --deep-ocean: #1a3a4a;
             --sunset-orange: #ff8c5a;
-            --sunset-pink: #ff6b9d;
-            --text-dark: #2d3142;
-            --text-light: #f8f9fa;
-            --card-shadow: 0 10px 40px rgba(26, 58, 74, 0.15);
+            --palm-color: #d4a373;
+            --card-shadow: 0 10px 40px rgba(26, 58, 74, 0.12);
             --card-hover: 0 20px 60px rgba(255, 107, 107, 0.25);
         }
 
@@ -26,99 +26,115 @@
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(180deg, var(--sand) 0%, #fff 100%);
-            color: var(--text-dark);
+            /* Тёплый песочный градиент */
+            background: linear-gradient(180deg, var(--sand-top) 0%, var(--sand-mid) 40%, var(--sand-bot) 100%);
+            color: #2d3142;
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* ========== ENHANCED CALIFORNIA BACKGROUND ========== */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 15% 20%, rgba(245, 197, 66, 0.12) 0%, transparent 45%),
-                radial-gradient(circle at 85% 75%, rgba(74, 144, 164, 0.1) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(255, 140, 90, 0.05) 0%, transparent 60%);
-            z-index: -1;
-            pointer-events: none;
-            animation: glowShift 25s ease-in-out infinite alternate;
-        }
-
+        /* Текстура песка (мелкие точки) */
         body::after {
             content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="1" fill="%231a3a4a" opacity="0.04"/></svg>');
-            background-size: 30px 30px;
-            z-index: -2;
+            background-image: radial-gradient(#d4a373 1px, transparent 1px);
+            background-size: 16px 16px;
+            opacity: 0.15;
+            z-index: -1;
             pointer-events: none;
         }
 
-        @keyframes glowShift {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(-2%, 2%) scale(1.05); }
-        }
-
-        /* Floating decorative elements */
-        .deco-item {
+        /* ========== ФОНОВЫЕ ДЕКОРАЦИИ ========== */
+        .bg-deco {
             position: fixed;
             pointer-events: none;
             z-index: -1;
-            opacity: 0.06;
-            font-size: 2.5rem;
-            animation: floatDeco 18s ease-in-out infinite;
         }
-        .deco-1 { top: 12%; left: 8%; animation-delay: 0s; font-size: 3rem; }
-        .deco-2 { top: 28%; right: 6%; animation-delay: 4s; }
-        .deco-3 { bottom: 35%; left: 5%; animation-delay: 8s; font-size: 2rem; }
-        .deco-4 { top: 60%; right: 12%; animation-delay: 12s; }
-        .deco-5 { bottom: 15%; left: 15%; animation-delay: 16s; font-size: 2.2rem; }
-        .deco-6 { top: 45%; left: 90%; animation-delay: 6s; }
 
-        @keyframes floatDeco {
+        /* Пальмы (SVG) */
+        .palm-svg {
+            width: 300px;
+            height: auto;
+            color: var(--palm-color);
+            opacity: 0.12;
+            filter: drop-shadow(4px 4px 8px rgba(0,0,0,0.05));
+        }
+
+        .palm-left {
+            bottom: -80px;
+            left: -60px;
+            transform: rotate(12deg);
+            width: 350px;
+        }
+
+        .palm-right {
+            top: 100px;
+            right: -80px;
+            transform: rotate(-15deg) scaleX(-1);
+            width: 320px;
+        }
+
+        .palm-top-left {
+            top: -50px;
+            left: 150px;
+            transform: rotate(45deg) scale(0.6);
+            opacity: 0.08;
+            width: 250px;
+        }
+
+        /* Плавающие элементы */
+        .float-deco {
+            position: absolute;
+            opacity: 0.06;
+            font-size: 2rem;
+            animation: float 12s ease-in-out infinite;
+        }
+        .float-1 { top: 15%; right: 10%; animation-delay: 0s; }
+        .float-2 { bottom: 25%; left: 8%; animation-delay: 5s; font-size: 2.5rem; }
+        
+        @keyframes float {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-15px) rotate(5deg); }
         }
 
-        /* Sun rays in hero */
-        .sun-rays {
+        /* Солнце */
+        .sun-deco {
             position: absolute;
-            top: -10%;
-            right: 10%;
-            width: 300px;
-            height: 300px;
-            background: conic-gradient(from 0deg, rgba(245,197,66,0.15) 0deg, transparent 30deg, rgba(255,140,90,0.1) 60deg, transparent 90deg, rgba(245,197,66,0.12) 120deg, transparent 150deg, rgba(255,140,90,0.08) 180deg, transparent 210deg, rgba(245,197,66,0.1) 240deg, transparent 270deg, rgba(255,140,90,0.12) 300deg, transparent 330deg, rgba(245,197,66,0.15) 360deg);
+            top: 10%;
+            right: 15%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(245,197,66,0.4) 0%, rgba(255,140,90,0.1) 50%, transparent 70%);
             border-radius: 50%;
-            animation: spinRays 40s linear infinite;
-            opacity: 0.7;
+            filter: blur(8px);
+            z-index: -1;
+            animation: pulse 8s ease-in-out infinite;
         }
-        @keyframes spinRays { to { transform: rotate(360deg); } }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
 
         /* ========== HERO SECTION ========== */
         .hero {
             position: relative;
-            min-height: 100vh;
+            min-height: 90vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 40px 20px;
-            background: linear-gradient(135deg, 
-                rgba(255, 140, 90, 0.08) 0%, 
-                rgba(245, 197, 66, 0.04) 50%,
-                rgba(74, 144, 164, 0.08) 100%);
-            overflow: hidden;
+            background: transparent;
         }
 
-        .hero::after {
-            content: "";
+        .hero-wave {
             position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 120px;
-            background: url('image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120"><path fill="%23fff9f0" fill-opacity="1" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path></svg>') no-repeat bottom;
+            bottom: 0; left: 0; width: 100%;
+            height: 100px;
+            background: url('image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100"><path fill="%23ffffff" fill-opacity="0.4" d="M0,32L60,42.7C120,53,240,75,360,80C480,85,600,75,720,64C840,53,960,43,1080,48C1200,53,1320,75,1380,85.3L1440,96L1440,100L1380,100C1320,100,1200,100,1080,100C960,100,840,100,720,100C600,100,480,100,360,100C240,100,120,100,60,100L0,100Z"></path></svg>') no-repeat bottom;
             background-size: cover;
         }
 
@@ -126,10 +142,11 @@
 
         .hero-badge {
             display: inline-flex; align-items: center; gap: 8px;
-            background: rgba(255, 255, 255, 0.9); padding: 8px 20px;
-            border-radius: 50px; font-size: 0.9rem; font-weight: 500;
-            color: var(--ocean); box-shadow: 0 4px 20px rgba(74, 144, 164, 0.15);
+            background: rgba(255, 255, 255, 0.85); padding: 8px 20px;
+            border-radius: 50px; font-size: 0.9rem; font-weight: 600;
+            color: var(--ocean); box-shadow: 0 4px 20px rgba(74, 144, 164, 0.1);
             margin-bottom: 24px; animation: fadeInUp 0.6s ease;
+            backdrop-filter: blur(4px);
         }
 
         .hero h1 {
@@ -142,7 +159,7 @@
         }
 
         .hero p {
-            font-size: clamp(1.1rem, 3vw, 1.4rem); color: var(--text-dark);
+            font-size: clamp(1.1rem, 3vw, 1.4rem); color: #2d3142;
             opacity: 0.85; margin-bottom: 32px; animation: fadeInUp 0.6s ease 0.2s both;
         }
 
@@ -162,7 +179,8 @@
         }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6); }
         .btn-secondary {
-            background: white; color: var(--ocean); border: 2px solid var(--ocean);
+            background: rgba(255,255,255,0.9); color: var(--ocean); border: 2px solid var(--ocean);
+            backdrop-filter: blur(4px);
         }
         .btn-secondary:hover { background: var(--ocean); color: white; transform: translateY(-3px); }
 
@@ -172,155 +190,203 @@
         }
 
         /* ========== SECTIONS ========== */
-        section { padding: 100px 20px; position: relative; }
-        .section-header { text-align: center; max-width: 700px; margin: 0 auto 60px; }
-        .section-header h2 {
-            font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 2.8rem);
-            color: var(--deep-ocean); margin-bottom: 16px;
+        section { padding: 80px 20px; position: relative; }
+        
+        /* Белый фон для контента, чтобы отделить от песка */
+        .content-wrapper {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 60px 30px;
+            margin: -40px auto 40px;
+            max-width: 1400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 1;
         }
-        .section-header p { color: var(--text-dark); opacity: 0.75; font-size: 1.1rem; }
+
+        .section-header { text-align: center; max-width: 700px; margin: 0 auto 50px; }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: var(--deep-ocean); margin-bottom: 12px;
+        }
+        .section-header p { color: #555; opacity: 0.85; font-size: 1.05rem; }
         .section-divider {
-            height: 3px; width: 80px; margin: 24px auto; border-radius: 3px;
+            height: 3px; width: 60px; margin: 20px auto; border-radius: 3px;
             background: linear-gradient(90deg, var(--gold), var(--sunset-orange));
         }
 
-        /* ========== DISTRICTS GRID ========== */
-        .districts-section { background: white; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; max-width: 1400px; margin: 0 auto; }
+        /* ========== GRIDS ========== */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+        
         .card {
-            position: relative; border-radius: 20px; overflow: hidden; background: white;
+            position: relative; border-radius: 16px; overflow: hidden; background: white;
             box-shadow: var(--card-shadow); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.03);
         }
-        .card:hover { transform: translateY(-10px) scale(1.02); box-shadow: var(--card-hover); z-index: 10; }
-        .card-image { position: relative; height: 200px; overflow: hidden; }
-        .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .card:hover .card-image img { transform: scale(1.1); }
+        .card:hover { transform: translateY(-8px) scale(1.01); box-shadow: var(--card-hover); z-index: 5; }
+        .card-image { position: relative; height: 180px; overflow: hidden; }
+        .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .card:hover .card-image img { transform: scale(1.08); }
         .card-badge {
-            position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.95);
-            padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
-            color: var(--ocean); box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.95);
+            padding: 5px 12px; border-radius: 15px; font-size: 0.7rem; font-weight: 700;
+            color: var(--ocean); box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-transform: uppercase; letter-spacing: 0.5px;
         }
-        .card-content { padding: 20px; }
+        .card-content { padding: 18px; }
         .card-title {
-            font-weight: 600; font-size: 1.05rem; color: var(--deep-ocean);
-            margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+            font-weight: 600; font-size: 1rem; color: var(--deep-ocean);
+            margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .card-desc { font-size: 0.9rem; color: var(--text-dark); opacity: 0.75; line-height: 1.5; }
-        .card-overlay {
-            position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,58,74,0.8), transparent 60%);
-            opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: flex-end; padding: 20px;
-        }
-        .card:hover .card-overlay { opacity: 1; }
-        .card-overlay span { color: white; font-weight: 500; font-size: 0.95rem; }
+        .card-desc { font-size: 0.85rem; color: #666; line-height: 1.4; }
 
         /* ========== POI SECTION ========== */
-        .poi-section { background: linear-gradient(180deg, var(--sand) 0%, white 100%); }
-        .poi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; max-width: 1300px; margin: 0 auto; }
+        .poi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
         .poi-card {
-            background: white; border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow);
+            background: white; border-radius: 14px; overflow: hidden; box-shadow: var(--card-shadow);
             transition: all 0.3s ease; cursor: pointer; display: flex; flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.03);
         }
-        .poi-card:hover { transform: translateY(-6px); box-shadow: var(--card-hover); }
-        .poi-image { height: 160px; overflow: hidden; }
+        .poi-card:hover { transform: translateY(-5px); box-shadow: var(--card-hover); }
+        .poi-image { height: 140px; overflow: hidden; }
         .poi-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
         .poi-card:hover .poi-image img { transform: scale(1.08); }
-        .poi-content { padding: 16px; flex: 1; display: flex; flex-direction: column; }
-        .poi-icon { font-size: 1.3rem; margin-bottom: 6px; }
+        .poi-content { padding: 14px; flex: 1; display: flex; flex-direction: column; }
+        .poi-icon { font-size: 1.2rem; margin-bottom: 4px; }
         .poi-title {
             font-weight: 600; color: var(--deep-ocean); margin-bottom: 4px;
-            font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .poi-desc { font-size: 0.85rem; color: var(--text-dark); opacity: 0.7; flex: 1; }
+        .poi-desc { font-size: 0.8rem; color: #777; flex: 1; line-height: 1.3; }
 
         /* ========== SHADY PLACES SECTION ========== */
-        .shady-section { background: linear-gradient(135deg, rgba(26,58,74,0.03) 0%, rgba(45,49,66,0.05) 100%); border-top: 2px dashed rgba(255,107,107,0.2); }
+        .shady-section {
+            background: linear-gradient(135deg, rgba(255,241,241,0.8) 0%, rgba(255,235,235,0.8) 100%);
+            border-top: 3px solid rgba(255,107,107,0.1);
+            border-bottom: 3px solid rgba(255,107,107,0.1);
+            margin: 40px 0;
+            padding: 60px 20px;
+            border-radius: 20px;
+        }
         .shady-section .section-header h2 {
-            background: linear-gradient(135deg, var(--coral), var(--sunset-orange));
+            background: linear-gradient(135deg, var(--coral), #d63031);
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
         .shady-badge {
-            display: inline-block; background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,140,90,0.15));
-            padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
-            color: var(--coral); margin-bottom: 16px; border: 1px solid rgba(255,107,107,0.3);
+            display: inline-block; background: rgba(255,107,107,0.1);
+            padding: 6px 14px; border-radius: 15px; font-size: 0.8rem; font-weight: 700;
+            color: var(--coral); margin-bottom: 12px; border: 1px solid rgba(255,107,107,0.2);
+        }
+        .poi-card.shady-card {
+            border: 2px dashed rgba(255,107,107,0.25);
+            background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
         }
 
         /* ========== MAP SECTION ========== */
-        .map-section { background: var(--deep-ocean); color: var(--text-light); text-align: center; }
+        .map-section {
+            background: var(--deep-ocean);
+            color: white; text-align: center;
+            margin-top: 60px;
+            border-radius: 24px 24px 0 0;
+        }
         .map-section .section-header h2 { color: white; }
         .map-section .section-header p { color: rgba(255,255,255,0.8); }
         .map-placeholder {
-            max-width: 900px; margin: 40px auto; padding: 60px 40px;
-            background: rgba(255,255,255,0.08); border-radius: 24px; border: 2px dashed rgba(255,255,255,0.2);
+            max-width: 800px; margin: 30px auto; padding: 40px;
+            background: rgba(255,255,255,0.05); border-radius: 20px;
+            border: 2px dashed rgba(255,255,255,0.2);
         }
-        .map-placeholder p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 24px; }
-        .map-cta { display: inline-flex; align-items: center; gap: 10px; color: var(--gold); font-weight: 600; text-decoration: none; transition: gap 0.3s ease; }
+        .map-cta {
+            display: inline-flex; align-items: center; gap: 10px; color: var(--gold);
+            font-weight: 600; text-decoration: none; transition: gap 0.3s ease;
+        }
         .map-cta:hover { gap: 14px; }
 
-        /* ========== FOOTER & DISCLAIMER ========== */
-        footer { background: var(--deep-ocean); color: rgba(255,255,255,0.7); padding: 40px 20px; text-align: center; font-size: 0.9rem; }
+        /* ========== FOOTER ========== */
+        footer { background: var(--deep-ocean); color: rgba(255,255,255,0.6); padding: 40px 20px; text-align: center; font-size: 0.85rem; }
         .disclaimer {
-            max-width: 900px; margin: 20px auto 0; padding: 16px;
-            background: rgba(255,255,255,0.05); border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; line-height: 1.5;
-            color: rgba(255,255,255,0.6);
+            max-width: 800px; margin: 20px auto 0; padding: 15px;
+            background: rgba(255,255,255,0.05); border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08); font-size: 0.8rem; line-height: 1.5;
         }
         .disclaimer strong { color: var(--gold); }
 
         /* ========== MODAL ========== */
         .modal {
-            display: none; position: fixed; inset: 0; background: rgba(10, 25, 32, 0.96);
-            z-index: 10000; justify-content: center; align-items: center; padding: 20px; cursor: zoom-out; animation: modalFade 0.3s ease;
+            display: none; position: fixed; inset: 0; background: rgba(10, 25, 32, 0.95);
+            z-index: 10000; justify-content: center; align-items: center; padding: 20px; cursor: zoom-out;
         }
-        .modal.active { display: flex; }
-        @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
-        .modal img { max-width: 95%; max-height: 90vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); object-fit: contain; }
+        .modal.active { display: flex; animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal img { max-width: 95%; max-height: 90vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
         .modal-caption {
             position: absolute; bottom: 30px; left: 0; right: 0; text-align: center; color: white;
-            background: rgba(0,0,0,0.6); padding: 14px 24px; border-radius: 50px; font-size: 1rem;
-            max-width: 600px; margin: 0 auto; backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.6); padding: 12px 20px; border-radius: 30px;
+            font-size: 0.95rem; max-width: 600px; margin: 0 auto; backdrop-filter: blur(6px);
         }
         .modal-close {
-            position: absolute; top: 24px; right: 30px; color: white; font-size: 2rem;
-            cursor: pointer; width: 44px; height: 44px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); transition: background 0.2s ease;
+            position: absolute; top: 20px; right: 25px; color: white; font-size: 1.8rem;
+            cursor: pointer; width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1);
         }
-        .modal-close:hover { background: rgba(255,107,107,0.8); }
+        .modal-close:hover { background: var(--coral); }
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            section { padding: 70px 20px; }
-            .hero { min-height: auto; padding: 80px 20px 120px; }
-            .hero::after { height: 80px; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-            .poi-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-            .btn { width: 100%; max-width: 280px; }
-            .deco-item { display: none; }
+            section { padding: 50px 15px; }
+            .hero { min-height: auto; padding: 80px 15px 100px; }
+            .content-wrapper { padding: 30px 15px; margin: -20px auto 30px; border-radius: 20px; }
+            .grid, .poi-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+            .card-image { height: 150px; }
+            .btn { width: 100%; max-width: 260px; }
+            .palm-left, .palm-right { width: 200px; opacity: 0.08; }
         }
 
         .scroll-hint {
-            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
             display: flex; flex-direction: column; align-items: center; gap: 8px;
-            color: var(--ocean); opacity: 0.7; animation: bounce 2s infinite;
+            color: var(--ocean); opacity: 0.6; animation: bounce 2s infinite;
         }
         @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
-        .scroll-hint span { font-size: 0.8rem; font-weight: 500; }
+        .scroll-hint span { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         .scroll-hint::after { content: "↓"; font-size: 1.5rem; }
     </style>
 </head>
 <body>
 
-<!-- Background decorations -->
-<div class="deco-item deco-1">🌴</div>
-<div class="deco-item deco-2">🌊</div>
-<div class="deco-item deco-3">🐚</div>
-<div class="deco-item deco-4">🏄</div>
-<div class="deco-item deco-5">☀️</div>
-<div class="deco-item deco-6">🌿</div>
+<!-- Background Decorations -->
+<div class="bg-deco sun-deco"></div>
+
+<!-- SVG Palm Trees -->
+<div class="bg-deco palm-svg palm-left">
+    <svg viewBox="0 0 100 200" fill="currentColor">
+        <!-- Trunk -->
+        <path d="M45 190 C 45 120, 55 80, 45 50 L 50 45 C 60 80, 55 120, 55 190 Z" />
+        <!-- Leaves -->
+        <path d="M45 50 C 20 40, 10 70, 20 90 C 30 70, 40 60, 45 50" />
+        <path d="M45 50 C 15 30, 5 10, 25 5 C 30 20, 40 35, 45 50" />
+        <path d="M45 50 C 30 10, 50 0, 60 10 C 55 25, 50 40, 45 50" />
+        <path d="M45 50 C 70 10, 95 15, 90 35 C 75 40, 60 45, 45 50" />
+        <path d="M45 50 C 80 50, 90 80, 75 95 C 65 75, 55 60, 45 50" />
+    </svg>
+</div>
+
+<div class="bg-deco palm-svg palm-right">
+    <svg viewBox="0 0 100 200" fill="currentColor">
+        <path d="M45 190 C 45 120, 55 80, 45 50 L 50 45 C 60 80, 55 120, 55 190 Z" />
+        <path d="M45 50 C 20 40, 10 70, 20 90 C 30 70, 40 60, 45 50" />
+        <path d="M45 50 C 15 30, 5 10, 25 5 C 30 20, 40 35, 45 50" />
+        <path d="M45 50 C 30 10, 50 0, 60 10 C 55 25, 50 40, 45 50" />
+        <path d="M45 50 C 70 10, 95 15, 90 35 C 75 40, 60 45, 45 50" />
+        <path d="M45 50 C 80 50, 90 80, 75 95 C 65 75, 55 60, 45 50" />
+    </svg>
+</div>
+
+<div class="float-deco float-1">🌊</div>
+<div class="float-deco float-2">🌴</div>
 
 <!-- ========== HERO SECTION ========== -->
 <header class="hero">
-    <div class="sun-rays"></div>
     <div class="hero-content">
         <div class="hero-badge">🌴 Welcome to Paradise</div>
         <h1>Sandpoint</h1>
@@ -330,46 +396,52 @@
             <a href="#poi" class="btn btn-secondary">See Highlights</a>
         </div>
     </div>
+    <div class="hero-wave"></div>
     <div class="scroll-hint"><span>Scroll to explore</span></div>
 </header>
 
-<!-- ========== DISTRICTS SECTION ========== -->
-<section id="districts" class="districts-section">
-    <div class="section-header">
-        <h2>🏘️ Discover the Neighborhoods</h2>
-        <div class="section-divider"></div>
-        <p>From historic cores to beachfront escapes — each district has its own soul, its own rhythm, its own reason to fall in love.</p>
-    </div>
-    <div class="grid" id="districtsGrid"></div>
-</section>
+<!-- ========== CONTENT WRAPPER (White Card on Sand) ========== -->
+<div class="content-wrapper">
+    
+    <!-- DISTRICTS SECTION -->
+    <section id="districts">
+        <div class="section-header">
+            <h2>🏘️ Discover the Neighborhoods</h2>
+            <div class="section-divider"></div>
+            <p>From historic cores to beachfront escapes — each district has its own soul.</p>
+        </div>
+        <div class="grid" id="districtsGrid"></div>
+    </section>
 
-<!-- ========== TOURIST ATTRACTIONS ========== -->
-<section id="poi" class="poi-section">
-    <div class="section-header">
-        <h2>✨ Must-Visit Places</h2>
-        <div class="section-divider"></div>
-        <p>Hidden gems, local favorites, and iconic landmarks — the spots that make Sandpoint unforgettable.</p>
-    </div>
-    <div class="poi-grid" id="touristGrid"></div>
-</section>
+    <!-- TOURIST ATTRACTIONS -->
+    <section id="poi" style="padding-top: 0;">
+        <div class="section-header">
+            <h2>✨ Must-Visit Places</h2>
+            <div class="section-divider"></div>
+            <p>Hidden gems, local favorites, and iconic landmarks.</p>
+        </div>
+        <div class="poi-grid" id="touristGrid"></div>
+    </section>
 
-<!-- ========== SHADY PLACES ========== -->
-<section class="shady-section">
-    <div class="section-header">
-        <div class="shady-badge">⚠️ For the Adventurous Traveler</div>
-        <h2>🚫 Not Your Typical Tourist Spots</h2>
-        <div class="section-divider"></div>
-        <p>Look, we're not saying you <em>should</em> visit these places... but if you do, you'll definitely have stories to tell. <br><small style="opacity:0.7">(Visit at your own risk. We warned you.)</small></p>
-    </div>
-    <div class="poi-grid" id="shadyGrid"></div>
-</section>
+    <!-- SHADY PLACES -->
+    <section class="shady-section">
+        <div class="section-header">
+            <div class="shady-badge">⚠️ For the Adventurous</div>
+            <h2>🚫 Not Your Typical Tourist Spots</h2>
+            <div class="section-divider"></div>
+            <p>We're not saying you <em>should</em> visit... but if you do, bring a friend.</p>
+        </div>
+        <div class="poi-grid" id="shadyGrid"></div>
+    </section>
+
+</div>
 
 <!-- ========== MAP SECTION ========== -->
 <section class="map-section">
     <div class="section-header">
         <h2>🗺️ Plan Your Visit</h2>
         <div class="section-divider"></div>
-        <p>Ready to experience Sandpoint in person? We'd love to welcome you.</p>
+        <p>Ready to experience Sandpoint? We'd love to welcome you.</p>
     </div>
     <div class="map-placeholder">
         <p>📍 Interactive map coming soon!</p>
@@ -377,13 +449,13 @@
     </div>
 </section>
 
-<!-- ========== FOOTER & DISCLAIMER ========== -->
+<!-- ========== FOOTER ========== -->
 <footer>
     <p>Made with ☀️ for dreamers & wanderers</p>
     <div class="disclaimer">
-        <strong>⚠️ DISCLAIMER:</strong> <em>Sandpoint</em> is a entirely fictional coastal city created exclusively for tabletop and online roleplay. It is not affiliated with any real-world municipality, including Sandpoint, Idaho, or any other locations sharing similar names. All establishments, landmarks, and events depicted are products of imagination. Any resemblance to actual places, persons, or events is purely coincidental.
+        <strong>⚠️ DISCLAIMER:</strong> <em>Sandpoint</em> is an entirely fictional coastal city created exclusively for tabletop and online roleplay. It is not affiliated with any real-world municipality. All establishments and landmarks depicted are products of imagination.
     </div>
-    <p style="margin-top:15px;opacity:0.5;font-size:0.8rem">Images © Sandpoint Archives • For personal & roleplay use only</p>
+    <p style="margin-top:15px;opacity:0.4;font-size:0.75rem">For personal & roleplay use only.</p>
 </footer>
 
 <!-- ========== MODAL ========== -->
@@ -400,83 +472,83 @@
         { img: "images/Districts/Westgate%20Industrial%20Park.png", label: "Westgate Industrial Park", desc: "Clean, modern industry zone", icon: "🏭" },
         { img: "images/Districts/Cliffside%20Estates.png", label: "Cliffside Estates", desc: "Gated community with ocean views", icon: "🏘️" },
         { img: "images/Districts/Coastal%20Plaza.png", label: "Coastal Plaza", desc: "Modern shopping & dining hub", icon: "🏙️" },
-        { img: "images/Districts/The%20Boardwalk.png", label: "The Boardwalk", desc: "Tourist promenade with street performers", icon: "🎡" },
-        { img: "images/Districts/Harborview.png", label: "Harborview", desc: "Urban apartments overlooking the marina", icon: "🏙️" },
+        { img: "images/Districts/The%20Boardwalk.png", label: "The Boardwalk", desc: "Tourist promenade", icon: "🎡" },
+        { img: "images/Districts/Harborview.png", label: "Harborview", desc: "Urban apartments overlooking marina", icon: "🏙️" },
         { img: "images/Districts/Old%20Sandpoint.png", label: "Old Sandpoint", desc: "Historic core with cobblestone streets", icon: "🏛️" },
         { img: "images/Districts/Pacific%20Heights.png", label: "Pacific Heights", desc: "Prestigious hillside homes", icon: "🏡" },
         { img: "images/Districts/Sunswept%20Bay.png", label: "Sunswept Bay", desc: "Upscale villas with private beaches", icon: "🏰" },
-        { img: "images/Districts/Seagull%20Nest.png", label: "Seagull Nest", desc: "Family-friendly neighborhood near the shore", icon: "🏘️" },
-        { img: "images/Districts/Whispering%20Pines.png", label: "Whispering Pines", desc: "Quiet suburb nestled in coastal forest", icon: "🏡" },
-        { img: "images/Districts/Maple%20Grove.png", label: "Maple Grove", desc: "Tree-lined streets and community gardens", icon: "🍁" },
-        { img: "images/Districts/Redwood%20Gateway.png", label: "Redwood Gateway", desc: "Nature's threshold to the national reserve", icon: "🌲" },
-        { img: "images/Districts/Redwood%20National%20Reserve2.png", label: "Redwood National Reserve", desc: "Protected wilderness with ancient trees", icon: "🌲" },
-        { img: "images/Districts/Driftwood%20Shores.png", label: "Driftwood Shores", desc: "Youthful beaches and surf culture", icon: "🏄" },
-        { img: "images/Districts/The%20Crossroads.png", label: "The Crossroads", desc: "Highway entrance and travel hub", icon: "🛣️" },
-        { img: "images/Districts/the%20Spills.png", label: "The Spills", desc: "Industrial decay turned street art canvas", icon: "🏭" },
-        { img: "images/Districts/Sandpoint%20Docks.png", label: "Sandpoint Docks", desc: "Working port with fresh catch daily", icon: "⚓" }
+        { img: "images/Districts/Seagull%20Nest.png", label: "Seagull Nest", desc: "Family-friendly neighborhood", icon: "🏘️" },
+        { img: "images/Districts/Whispering%20Pines.png", label: "Whispering Pines", desc: "Quiet suburb in coastal forest", icon: "🏡" },
+        { img: "images/Districts/Maple%20Grove.png", label: "Maple Grove", desc: "Tree-lined streets & gardens", icon: "🍁" },
+        { img: "images/Districts/Redwood%20Gateway.png", label: "Redwood Gateway", desc: "Nature's threshold", icon: "🌲" },
+        { img: "images/Districts/Redwood%20National%20Reserve2.png", label: "Redwood Reserve", desc: "Protected wilderness", icon: "🌲" },
+        { img: "images/Districts/Driftwood%20Shores.png", label: "Driftwood Shores", desc: "Youthful beaches & surf culture", icon: "🏄" },
+        { img: "images/Districts/The%20Crossroads.png", label: "The Crossroads", desc: "Highway entrance & travel hub", icon: "🛣️" },
+        { img: "images/Districts/the%20Spills.png", label: "The Spills", desc: "Industrial decay turned art", icon: "🏭" },
+        { img: "images/Districts/Sandpoint%20Docks.png", label: "Sandpoint Docks", desc: "Working port with fresh catch", icon: "⚓" }
     ];
 
     const touristData = [
-        { img: "images/PoI/Aphrodite%27s%20Touch.png", icon: "💄", label: "Aphrodite's Touch", desc: "Artisan perfumery & botanical spa" },
-        { img: "images/PoI/Coastal%20Fitness%20%26%20Surf%20Club.png", icon: "💪", label: "Coastal Fitness & Surf Club", desc: "Premium gym & surf lessons" },
-        { img: "images/PoI/Prometheus%20Biosolutions.png", icon: "🧬", label: "Prometheus Biosolutions", desc: "Cutting-edge research facility" },
-        { img: "images/PoI/Sandpoint%20Coast%20High%20School.png", icon: "🏫", label: "Sandpoint Coast High School", desc: "Main school with ocean-view classrooms" },
-        { img: "images/PoI/The%20Rustic%20Tap.png", icon: "🍻", label: "The Rustic Tap", desc: "Cozy ranger pub with local brews" },
-        { img: "images/PoI/The%20Witching%20Hour.png", icon: "🔮", label: "The Witching Hour", desc: "Bass-heavy club, opens at midnight" },
-        { img: "images/PoI/Tides%20Arena.png", icon: "🏟️", label: "Tides Arena", desc: "Sports venue & concert hall" },
-        { img: "images/PoI/Unstable%20Beans.png", icon: "☕", label: "Unstable Beans", desc: "Quirky café with experimental roasts" }
+        { img: "images/PoI/Aphrodite%27s%20Touch.png", icon: "💄", label: "Aphrodite's Touch", desc: "Artisan perfumery & spa" },
+        { img: "images/PoI/Coastal%20Fitness%20%26%20Surf%20Club.png", icon: "💪", label: "Coastal Fitness", desc: "Premium gym & surf lessons" },
+        { img: "images/PoI/Prometheus%20Biosolutions.png", icon: "🧬", label: "Prometheus Bio", desc: "Cutting-edge research" },
+        { img: "images/PoI/Sandpoint%20Coast%20High%20School.png", icon: "🏫", label: "Coast High School", desc: "Ocean-view classrooms" },
+        { img: "images/PoI/The%20Rustic%20Tap.png", icon: "🍻", label: "The Rustic Tap", desc: "Cozy ranger pub" },
+        { img: "images/PoI/The%20Witching%20Hour.png", icon: "🔮", label: "The Witching Hour", desc: "Bass-heavy midnight club" },
+        { img: "images/PoI/Tides%20Arena.png", icon: "🏟️", label: "Tides Arena", desc: "Sports venue & concerts" },
+        { img: "images/PoI/Unstable%20Beans.png", icon: "☕", label: "Unstable Beans", desc: "Quirky experimental café" }
     ];
 
-    // FIXED: Correct URL encoding for curly apostrophe ’ -> %E2%80%99
+    // Fixed URL encoding for curly apostrophe ’ -> %E2%80%99
     const shadyData = [
-        { img: "images/PoI/Salty%20Pete%E2%80%99s%20Seafood.png", icon: "🐟", label: "Salty Pete's Seafood", desc: "Abandoned warehouse. Smells like fish and bad decisions. Rumored midnight meetings." },
-        { img: "images/PoI/Sandpoint%20Fire%20Station%20%231.png", icon: "🚒", label: "Sandpoint Fire Station #1", desc: "Central firehouse. Visit only if you enjoy sirens and emergency protocols." },
-        { img: "images/PoI/Sandpoint%20PD.png", icon: "👮", label: "Sandpoint PD", desc: "Police headquarters. Great for tours if you're into... legal activities." },
-        { img: "images/PoI/St.%20Catherine%27s%20Medical%20Center.png", icon: "🏥", label: "St. Catherine's Medical Center", desc: "Main hospital. 24/7 care. Come for the medical attention, stay because you have to." }
+        { img: "images/PoI/Salty%20Pete%E2%80%99s%20Seafood.png", icon: "🐟", label: "Salty Pete's Seafood", desc: "Smells like fish and bad decisions. Rumored meetings." },
+        { img: "images/PoI/Sandpoint%20Fire%20Station%20%231.png", icon: "🚒", label: "Fire Station #1", desc: "Visit only if you enjoy sirens." },
+        { img: "images/PoI/Sandpoint%20PD.png", icon: "👮", label: "Sandpoint PD", desc: "Great for tours... if you're legal." },
+        { img: "images/PoI/St.%20Catherine%27s%20Medical%20Center.png", icon: "🏥", label: "St. Catherine's", desc: "Come for care, stay because you have to." }
     ];
 
-    // ========== RENDER CARDS ==========
-    function renderCards(containerId, data, isShady = false) {
-        const grid = document.getElementById(containerId);
-        data.forEach((item, i) => {
-            const card = document.createElement('div');
-            card.className = isShady ? 'poi-card shady-card' : 'card';
-            card.style.borderColor = isShady ? 'rgba(255,107,107,0.3)' : '';
-            card.style.borderWidth = isShady ? '2px' : '';
-            card.style.borderStyle = isShady ? 'dashed' : '';
-            
-            const imgTag = `<img src="${item.img}" alt="${item.label}" loading="${i < 4 ? 'eager' : 'lazy'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22200%22><rect fill=%22%23e5e7eb%22 width=%22280%22 height=%22200%22/><text fill=%22%239ca3af%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-family=%22sans-serif%22 font-size=%2214%22>Image not found</text></svg>'">`;
-            
-            let html = `<div class="poi-image">${imgTag}</div>`;
-            if (!isShady) {
-                html = `
-                    <div class="card-image">${imgTag}
-                        <span class="card-badge">District</span>
-                        <div class="card-overlay"><span>🔍 Click to enlarge</span></div>
-                    </div>
-                `;
-            }
-            
-            html += `
+    // ========== RENDER FUNCTIONS ==========
+    function createCardHTML(item, type) {
+        const isShady = type === 'shady';
+        const borderColor = isShady ? '' : '';
+        const cardClass = isShady ? 'poi-card shady-card' : 'card';
+        
+        // Image Tag
+        const imgSrc = item.img;
+        const imgTag = `<img src="${imgSrc}" alt="${item.label}" loading="lazy" onerror="this.style.display='none'">`;
+        
+        let html = '';
+        
+        if (!isShady && item.desc) { // Districts
+             html = `
+                <div class="card-image">${imgTag}<span class="card-badge">District</span></div>
+                <div class="card-content">
+                    <div class="card-title">${item.icon || ''} ${item.label}</div>
+                    <div class="card-desc">${item.desc}</div>
+                </div>`;
+        } else { // POI & Shady
+            html = `
+                <div class="poi-image">${imgTag}</div>
                 <div class="poi-content">
                     <div class="poi-icon">${item.icon}</div>
                     <div class="poi-title">${item.label}</div>
-                    <div class="poi-desc" style="${isShady ? 'color:var(--coral);opacity:0.9' : ''}">${item.desc}</div>
-                </div>
-            `;
-            
-            card.innerHTML = html;
-            card.addEventListener('click', () => openModal(item.img, item.label));
-            grid.appendChild(card);
-        });
+                    <div class="poi-desc">${item.desc}</div>
+                </div>`;
+        }
+        
+        return `<div class="${cardClass}" onclick="openModal('${imgSrc}', '${item.label.replace(/'/g, "\\'")}')">${html}</div>`;
+    }
+
+    function renderGrid(containerId, data, type) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = data.map(item => createCardHTML(item, type)).join('');
     }
 
     // ========== MODAL ==========
     function openModal(src, caption) {
-        const modal = document.getElementById('imageModal');
         document.getElementById('modalImage').src = src;
         document.getElementById('modalCaption').textContent = caption;
-        modal.classList.add('active');
+        document.getElementById('imageModal').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
@@ -484,27 +556,25 @@
         const modal = document.getElementById('imageModal');
         modal.classList.remove('active');
         document.body.style.overflow = '';
-        setTimeout(() => { document.getElementById('modalImage').src = ''; }, 300);
     }
 
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.getElementById('imageModal').addEventListener('click', (e) => { if(e.target.id === 'imageModal') closeModal(); });
     document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
 
-    // ========== SMOOTH SCROLL ==========
+    // Smooth Scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
         });
     });
 
-    // ========== INIT ==========
+    // Init
     document.addEventListener('DOMContentLoaded', () => {
-        renderCards('districtsGrid', districtsData);
-        renderCards('touristGrid', touristData);
-        renderCards('shadyGrid', shadyData, true);
+        renderGrid('districtsGrid', districtsData, 'district');
+        renderGrid('touristGrid', touristData, 'poi');
+        renderGrid('shadyGrid', shadyData, 'shady');
     });
 </script>
 </body>
