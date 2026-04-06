@@ -374,7 +374,7 @@
         const imgTag = `<img src="${item.img}" alt="${item.label}" loading="lazy" onerror="this.style.display='none'">`;
         
         let html = '';
-        if (!isShady) {
+        if (type === 'district') {
             html = `
                 <div class="card-image">${imgTag}<span class="card-badge">District</span></div>
                 <div class="card-content">
